@@ -13,6 +13,8 @@ https://docs.openshift.com/container-platform/3.7/admin_guide/managing_networkin
  https://kubernetes.io/docs/concepts/services-networking/network-policies/
 
 
+https://github.com/kubernetes/community/blob/master/contributors/design-proposals/network/network-policy.md
+
 
 https://blog.openshift.com/network-policy-objects-action/
 
