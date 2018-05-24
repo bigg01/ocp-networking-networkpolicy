@@ -19,3 +19,11 @@ https://blog.openshift.com/network-policy-objects-action/
 
 
 https://github.com/VeerMuchandi/usingnetworkpolicyobjects
+
+
+https://github.com/ahmetb/kubernetes-network-policy-recipes
+
+
+# audit 
+
+https://github.com/Shopify/kubeaudit
