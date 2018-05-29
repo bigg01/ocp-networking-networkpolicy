@@ -133,3 +133,24 @@ $ curl --header "X-Real-IP: 10.0.0.xxx"-v  10.0.0.4:8080
 &{GET / HTTP/1.1 1 1 map[User-Agent:[curl/7.54.0] Accept:[*/*] X-Real-Ip:[10.0.0.xxx-v 10.0.0.208] Connection:[close]] {} <nil> 0 [] true 10.0.0.4:8080 map[] map[] <nil> map[] 10.0.0.4:56042 / <nil> <nil> <nil> 0xc42012a240}
 
 ```
+
+$ go run http.go
+```go
+package main
+
+import (
+    "fmt"
+    "log"
+    "net/http"
+)
+
+func handler(w http.ResponseWriter, r *http.Request) {
+    fmt.Fprintf(w, "Hi there, I love %s!", r.URL.Path[1:])
+    fmt.Println(r)
+}
+
+func main() {
+    http.HandleFunc("/", handler)
+    log.Fatal(http.ListenAndServe(":4444", nil))
+}
+```
