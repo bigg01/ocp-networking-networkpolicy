@@ -154,3 +154,10 @@ func main() {
     log.Fatal(http.ListenAndServe(":4444", nil))
 }
 ```
+
+$ output
+```
+&{GET / HTTP/1.1 1 1 map[User-Agent:[curl/7.51.0] Accept:[*/*] X-Forwarded-For:[10.0.0.4 10.0.0.4] Src:[10.0.0.4] X-Real-Ip:[10.0.0.4] Connection:[close]] {} <nil> 0 [] true 10.0.0.4:8080 map[] map[] <nil> map[] 10.0.0.4:36018 / <nil> <nil> <nil> 0xc4201b3e00}
+^Csignal: interrupt
+
+```
