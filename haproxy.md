@@ -1,5 +1,7 @@
 # ingress
 
+user --> G LB 8080 --> (X-Real-IP) --> 8024 --> 4444 (webserver)
+
 # ip white list
 
 
@@ -42,8 +44,56 @@ listen  myWeb
 
 
 ## LB under Global LB
-$ /usr/sbin/haproxy -f /etc/haproxy/haproxy.cfg -d
+$ /usr/sbin/haproxy -f /etc/haproxy/haproxy2.cfg -d
 ```
+#lobal
+#    maxconn 100000
+#    uid 99
+#    gid 99
+#    daemon
+
+#https://rafpe.ninja/2016/05/01/haproxy-acl-on-x-forwarded-for/
+
+defaults
+    option forwardfor except 127.0.0.1
+    mode    http
+    timeout connect  5000
+    timeout client 5000
+    timeout server  50000
+
+listen  myWeb
+    bind :8024
+    mode http
+    log /dev/log local0 debug
+    balance source
+    #option forwardfor
+    option http-server-close
+    option forwardfor
+
+    # http-request capture req.hdr(Host) id 0
+    # http-request capture req.hdr(User-Agent) id 1
+    #capture request header Host len 15
+    #capture request header X-Forwarded-For len 15
+    #capture request header X-Real-Ip len 15
+    #capture request header Referer len 15
+    #http-request capture req.hdr(X-Real-Ip) id 0
+    #acl spamlist hdr_ip(X-Forwarded-For) src 10.0.0.4
+    #http-request tarpit if spamlist
+    #acl req.fhdr(X-Forwarded-For) -m ip 10.0.0.4
+    #acl is-blocked-ip src 10.0.0.0/24 # range example
+
+    acl is-allow-ip src 10.0.0.4 # single GSLB and Header RealIP
+    #acl is-allow-ip src hdr_val(X-Real-Ip)
+    #%[req.hdr(host)]
+    #acl is-real-ip src %[capture.req.hdr(0)]
+    http-request allow if is-allow-ip
+    server  S1 10.0.0.208:4444 check inter 2000 fall 3
+
+
+#### ACL
+#acl invalid_src  src          0.0.0.0/7 224.0.0.0/3
+#acl invalid_src  src_port     0:1023
+#acl local_dst    hdr(host) -i localhost
 ```
 
 
