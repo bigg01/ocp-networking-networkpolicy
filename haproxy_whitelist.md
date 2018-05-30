@@ -222,3 +222,15 @@ to something like that
   http-request deny  if !network_allowed   
     {{- end }}
 ```
+
+
+tcp-request content reject if !whitelist
+503 Service Unavailable
+No server is available to handle this request.
+```
+
+http-request deny  if !network_allowed
+```
+403 Forbidden
+Request forbidden by administrative rules.
+```
