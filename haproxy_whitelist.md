@@ -7,6 +7,7 @@ user --> G LB 8080 --> (X-Real-IP) --> 8024 --> 4444 (webserver)
 
 ## Global LB
 $ sudo /usr/sbin/haproxy -f /etc/haproxy/haproxy6.cfg -d
+ http-request add-header X-CLIENT-IP %[src]
 ```sh
 global
         log 127.0.0.1 local2
@@ -40,6 +41,9 @@ backend filter_app_http
 
 ## OCP LB under Global LB
 $ /usr/sbin/haproxy -f /etc/haproxy/haproxy2.cfg -d
+  acl network_allowed hdr_ip(X-Forwarded-For) 10.0.0.4 10.0.0.208 10.0.0.0/24
+
+
 ```sh
 global
         # uid 99
