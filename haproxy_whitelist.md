@@ -1,6 +1,6 @@
 | Type          | Are           | Status  |
 | ------------- |:-------------:| -----:|
-| http          | tested        | works on my machine |
+| http          | tested        | works on my machine :neckbeard:|
 | https    | not tested      |    |
 
 
@@ -146,6 +146,8 @@ Hi there, I love !
 ```
 
 ### OCP www server log
+
+it works yeah :dizzy_face:
 ```go
 &{GET / HTTP/1.1 1 1 map[User-Agent:[curl/7.54.0] Accept:[*/*] X-Client-Ip:[10.0.0.208] X-Forwarded-For:[10.0.0.208] Connection:[close]] {} <nil> 0 [] true 10.0.0.4:8080 map[] map[] <nil> map[] 10.0.0.4:49614 / <nil> <nil> <nil> 0xc4201ce000}
 ```
