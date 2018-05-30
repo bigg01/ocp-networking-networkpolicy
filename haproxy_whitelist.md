@@ -225,12 +225,14 @@ to something like that
 
 
 tcp-request content reject if !whitelist
-503 Service Unavailable
-No server is available to handle this request.
-```
+<dl>
+  <dt>503 Service Unavailable</dt>
+  <dd>No server is available to handle this request.</dd>
+</dl>
 
 http-request deny  if !network_allowed
-```
-403 Forbidden
-Request forbidden by administrative rules.
-```
+
+<dl>
+  <dt>403 Forbidden</dt>
+  <dd>Request forbidden by administrative rules.</dd>
+</dl>
