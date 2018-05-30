@@ -1,3 +1,9 @@
+| Type          | Are           | Status  |
+| ------------- |:-------------:| -----:|
+| http          | tested        | works on my machine |
+| https    | not tested      |    |
+
+
 # ingress
 
 user --> G LB 8080 --> (X-Real-IP) --> 8024 --> 4444 (webserver)
@@ -44,6 +50,8 @@ backend filter_app_http
 We do a ACL for X-Forwarded-For
 $ /usr/sbin/haproxy -f /etc/haproxy/haproxy2.cfg -d
 ### acl network_allowed hdr_ip(X-Forwarded-For) 10.0.0.4 10.0.0.208 10.0.0.0/24
+
+
 ```sh
 global
         # uid 99
@@ -193,4 +201,24 @@ curl -v  10.0.0.4:8080
 Request forbidden by administrative rules.
 </body></html>
 * Closing connection 0
+```
+
+
+### in OCP it will be done via anottaion on the route
+https://github.com/openshift/origin/blob/master/images/router/haproxy/conf/haproxy-config.template
+
+### we must do custom router:
+
+```go
+{{- with $ip_whiteList := firstMatch $cidrListPattern (index $cfg.Annotations "haproxy.router.openshift.io/ip_whitelist") }}
+  acl whitelist src {{ $ip_whiteList }}
+  tcp-request content reject if !whitelist
+    {{- end }}
+```
+to something like that
+```go
+{{- with $ip_whiteList := firstMatch $cidrListPattern (index $cfg.Annotations "haproxy.router.openshift.io/ip_whitelist") }}
+  acl whitelist hdr_ip(X-Forwarded-For) {{ $ip_whiteList }}
+  http-request deny  if !network_allowed   
+    {{- end }}
 ```
