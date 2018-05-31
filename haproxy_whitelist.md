@@ -4,7 +4,7 @@
 | Type          | Are           | Status  |
 | ------------- |:-------------:| -----:|
 | http          | tested        | works on my machine :neckbeard:|
-| https    | not tested      |    |
+| https    | not tested      |  With SSL we have to terminate and intercept to add src header mhh  |
 
 
 # ingress
