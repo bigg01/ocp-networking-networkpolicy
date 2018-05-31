@@ -15,7 +15,7 @@ user --> G LB 8080 --> (X-Real-IP) --> 8024 --> 4444 (webserver)
 
 
 ## Global LB
-Must forward Clietn IP. We ware setting the source IP to the Header
+Must forward Client IP. We were setting the source IP to the Header
 $ sudo /usr/sbin/haproxy -f /etc/haproxy/haproxy6.cfg -d
 ### http-request add-header X-CLIENT-IP %[src]
 ```sh
@@ -209,7 +209,7 @@ Request forbidden by administrative rules.
 ```
 
 
-### in OCP it will be done via anottaion on the route
+### in OCP it will be done via annotation on the route
 https://github.com/openshift/origin/blob/master/images/router/haproxy/conf/haproxy-config.template
 
 ### we must do custom router:
