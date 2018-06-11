@@ -779,3 +779,7 @@ backend be_tcp:{{$cfgIdx}}
 {{ end }}{{/* end cert_config map template */}}
 
 ```
+
+
+# A10 setup
+https://files.a10networks.com/vadc/forums/topic/determine-source-ip-and-port/
