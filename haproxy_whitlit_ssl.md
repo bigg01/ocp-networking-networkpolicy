@@ -1,5 +1,31 @@
+# A10 setup
+https://files.a10networks.com/vadc/forums/topic/determine-source-ip-and-port/
 
-GSLB LB:
+```
+# with port
+when HTTP_REQUEST {
+HTTP::header insert "X-Test-Client" [IP::client_addr]:[TCP::local_port]
+}
+
+#without port
+when HTTP_REQUEST {
+HTTP::header insert “X-Forwarded-For” [IP::client_addr]
+}
+```
+
+
+# IP Whitelisting:
+```sh
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    haproxy.router.openshift.io/ip_whitelist: 10.0.0.4
+    openshift.io/host.generated: 'true'
+```
+
+
+# GSLB LB:
 
 ```
 PEM
@@ -781,5 +807,3 @@ backend be_tcp:{{$cfgIdx}}
 ```
 
 
-# A10 setup
-https://files.a10networks.com/vadc/forums/topic/determine-source-ip-and-port/
