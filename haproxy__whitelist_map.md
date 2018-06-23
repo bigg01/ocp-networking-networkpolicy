@@ -1,13 +1,13 @@
 # default map file
 
 cat /etc/haproxy/acl-map
-```
+```txt
 10.0.1.0/24
 10.0.0.23
 ```
 
 # add dynamic acl when haproxy is running
-```
+```sh
 $ echo "show acl" |         sudo socat stdio /tmp/haproxy.sock
 # id (file) description
 0 (/etc/haproxy/acl-map-v12) pattern loaded from file '/etc/haproxy/acl-map-v12' used by acl at file '/etc/haproxy/haproxy6.cfg' line 41
@@ -48,7 +48,7 @@ $ echo "show acl #1" |         sudo socat stdio /tmp/haproxy.sock
 ```
 
 cat haproxy6.cfg
-```
+```yaml
 global
         log 127.0.0.1:5555 local2 debug
         stats socket /tmp/haproxy.sock mode 666 level admin
@@ -109,7 +109,7 @@ backend filter_app_http
 ```
 
 ## socklog
-```
+```sh
 ./socklog  inet 0 5555
 listening on 0.0.0.0:5555, starting.
 127.0.0.1: local2.notice: Jun 23 15:30:58 haproxy[29893]: Proxy stats started.
@@ -120,7 +120,7 @@ listening on 0.0.0.0:5555, starting.
 ```
 
 # socat
-````
+```sh
 echo "show info " |         sudo socat stdio /tmp/haproxy.sock
 Name: HAProxy
 Version: 1.6.13
