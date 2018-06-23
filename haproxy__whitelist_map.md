@@ -50,9 +50,9 @@ $ echo "show acl #1" |         sudo socat stdio /tmp/haproxy.sock
 ```
 # with haproxycm
 ```
-/haproxycmd "add acl #1 10.0.0.208"
+$ ./haproxycmd "add acl #1 10.0.0.208"
 
-$ haproxycmd  4  ./haproxycmd "show acl #1"
+$ ./haproxycmd "show acl #1"
 0x5574290b9950 10.0.0.208
 
 $ ./haproxycmd "del acl #1 10.0.0.208"
