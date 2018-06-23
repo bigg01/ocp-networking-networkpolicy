@@ -1,46 +1,3 @@
-https://github.com/bigg01/haproxycmd
-
-$ go build -a -tags netgo -installsuffix netgo -o haproxycmd
-
-./haproxycmd --socket /tmp/haproxy.sock
-Unknown command. Please enter one of the following commands only :
-  clear counters : clear max statistics counters (add 'all' for all counters)
-  clear table    : remove an entry from a table
-  help           : this message
-  prompt         : toggle interactive mode with prompt
-  quit           : disconnect
-  show backend   : list backends in the current running config
-  show info      : report information about the running process
-  show pools     : report information about the memory pools usage
-  show stat      : report counters for each proxy and server
-  show stat resolvers [id]: dumps counters from all resolvers section and
-                            associated name servers
-  show errors    : report last request and response errors for each proxy
-  show sess [id] : report the list of current sessions or dump this session
-  show table [id]: report table usage stats or dump this table's contents
-  show servers state [id]: dump volatile server information (for backend <id>)
-  get weight     : report a server's current weight
-  set weight     : change a server's weight
-  set server     : change a server's state, weight or address
-  set table [id] : update or create a table entry's data
-  set timeout    : change a timeout setting
-  set maxconn    : change a maxconn setting
-  set rate-limit : change a rate limiting value
-  disable        : put a server or frontend in maintenance mode
-  enable         : re-enable a server or frontend which is in maintenance mode
-  shutdown       : kill a session or a frontend (eg:to release listening ports)
-  show acl [id]  : report available acls or dump an acl's contents
-  get acl        : reports the patterns matching a sample for an ACL
-  add acl        : add acl entry
-  del acl        : delete acl entry
-  clear acl <id> : clear the content of this acl
-  show map [id]  : report available maps or dump a map's contents
-  get map        : reports the keys and values matching a sample for a map
-  set map        : modify map entry
-  add map        : add map entry
-  del map        : delete map entry
-  clear map <id> : clear the content of this map
-  set ssl <stmt> : set statement for ssl
 
 
 cat /etc/haproxy/acl-map
@@ -182,4 +139,50 @@ description:
 
 $ echo "show errors " |         sudo socat stdio /tmp/haproxy.sock
 Total events captured on [23/Jun/2018:15:32:08.713] : 0
+```
+
+
+https://github.com/bigg01/haproxycmd
+```
+$ go build -a -tags netgo -installsuffix netgo -o haproxycmd
+
+./haproxycmd --socket /tmp/haproxy.sock
+Unknown command. Please enter one of the following commands only :
+  clear counters : clear max statistics counters (add 'all' for all counters)
+  clear table    : remove an entry from a table
+  help           : this message
+  prompt         : toggle interactive mode with prompt
+  quit           : disconnect
+  show backend   : list backends in the current running config
+  show info      : report information about the running process
+  show pools     : report information about the memory pools usage
+  show stat      : report counters for each proxy and server
+  show stat resolvers [id]: dumps counters from all resolvers section and
+                            associated name servers
+  show errors    : report last request and response errors for each proxy
+  show sess [id] : report the list of current sessions or dump this session
+  show table [id]: report table usage stats or dump this table's contents
+  show servers state [id]: dump volatile server information (for backend <id>)
+  get weight     : report a server's current weight
+  set weight     : change a server's weight
+  set server     : change a server's state, weight or address
+  set table [id] : update or create a table entry's data
+  set timeout    : change a timeout setting
+  set maxconn    : change a maxconn setting
+  set rate-limit : change a rate limiting value
+  disable        : put a server or frontend in maintenance mode
+  enable         : re-enable a server or frontend which is in maintenance mode
+  shutdown       : kill a session or a frontend (eg:to release listening ports)
+  show acl [id]  : report available acls or dump an acl's contents
+  get acl        : reports the patterns matching a sample for an ACL
+  add acl        : add acl entry
+  del acl        : delete acl entry
+  clear acl <id> : clear the content of this acl
+  show map [id]  : report available maps or dump a map's contents
+  get map        : reports the keys and values matching a sample for a map
+  set map        : modify map entry
+  add map        : add map entry
+  del map        : delete map entry
+  clear map <id> : clear the content of this map
+  set ssl <stmt> : set statement for ssl
 ```
