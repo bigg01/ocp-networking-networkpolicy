@@ -1,3 +1,5 @@
+https://www.haproxy.com/de/blog/dynamic-configuration-haproxy-runtime-api/
+
 # default map file
 
 cat /etc/haproxy/acl-map
