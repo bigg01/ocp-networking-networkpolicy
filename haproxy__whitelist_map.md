@@ -1,4 +1,4 @@
-
+# default map file
 
 cat /etc/haproxy/acl-map
 ```
@@ -6,6 +6,46 @@ cat /etc/haproxy/acl-map
 10.0.0.23
 ```
 
+# add dynamic acl when haproxy is running
+```
+$ echo "show acl" |         sudo socat stdio /tmp/haproxy.sock
+# id (file) description
+0 (/etc/haproxy/acl-map-v12) pattern loaded from file '/etc/haproxy/acl-map-v12' used by acl at file '/etc/haproxy/haproxy6.cfg' line 41
+1 (/etc/haproxy/acl-map-v12-route) pattern loaded from file '/etc/haproxy/acl-map-v12-route' used by acl at file '/etc/haproxy/haproxy6.cfg' line 41
+2 () acl 'src' file '/etc/haproxy/haproxy6.cfg' line 41
+
+ $  echo "show acl #0" |         sudo socat stdio /tmp/haproxy.sock
+0x55bedc677b90 10.0.0.4
+0x55bedc677bc0 10.0.0.23
+
+$ echo "show acl #1" |         sudo socat stdio /tmp/haproxy.sock
+
+$ echo "add acl #1 10.0.0.208" |         sudo socat stdio /tmp/haproxy.sock
+
+$  echo "show acl #1" |         sudo socat stdio /tmp/haproxy.sock
+0x55bedc658950 10.0.0.208
+
+$ echo "show acl #0" |         sudo socat stdio /tmp/haproxy.sock
+0x55bedc677b90 10.0.0.4
+0x55bedc677bc0 10.0.0.23
+
+$ echo "del acl #0 10.0.0.208" |         sudo socat stdio /tmp/haproxy.sock
+Key not found.
+
+$ echo "show acl #0" |         sudo socat stdio /tmp/haproxy.sock
+0x55bedc677b90 10.0.0.4
+0x55bedc677bc0 10.0.0.23
+
+$ echo "show acl #1" |         sudo socat stdio /tmp/haproxy.sock
+0x55bedc658950 10.0.0.208
+
+$ echo "show acl #0" |         sudo socat stdio /tmp/haproxy.sock
+0x55bedc677b90 10.0.0.4
+0x55bedc677bc0 10.0.0.23
+
+$ echo "del acl #1 10.0.0.208" |         sudo socat stdio /tmp/haproxy.sock
+$ echo "show acl #1" |         sudo socat stdio /tmp/haproxy.sock
+```
 
 cat haproxy6.cfg
 ```
@@ -21,7 +61,6 @@ global
 
 defaults
         log global
-        #option dontlognull
         timeout connect 5000
         timeout client 50000
         timeout server 50000
@@ -45,33 +84,28 @@ listen stats # Define a listen section called "stats"
 
 frontend filter_http
         bind :8080
-       # capture request header X-Haproxy-ACL len 64
-       # capture request header X-Unique-ID len 64
+        option dontlognull
         #https://www.haproxy.com/de/blog/haproxy-log-customization/
-        #log-format "%ci:%cp %si [%t] %ft %b/%s %Tw/%Tc/%Tt %B '%ts' ac/%fc/%bc/%sc/%rc %sq/%bq: %[capture.req.hdr(0)]"
-        log-format "Client: %ci:%cp %si [%t] %ft %b/%s %Tw/%Tc/%Tt %B '%ts' ac/%fc/%bc/%sc/%rc %sq/%bq]"
-        # -f works but is not reloaded we should use maps
-        # acl whitelist src -f /etc/haproxy/acl-map
+        log-format "%ci:%cp\ [%t]\ %ft\ %b/%s\ %Tw/%Tc/%Tt\ %B\ %ts\  %ac/%fc/%bc/%sc/%rc\ %sq/%bq"
 
-        acl whitelist src [src,map_ip(/etc/haproxy/acl-map,0)]
+        # default acl for a SecureZone
+        acl whitelist src -f /etc/haproxy/acl-map-v12 -f /etc/haproxy/acl-map-v12-roue
 
-# echo "show map /etc/haproxy/acl-map" |         sudo socat stdio /tmp/haproxy.sock
-# echo "show acl" |         sudo socat stdio /tmp/haproxy.sock
-# 0x564143b12bf0 10.0.0.4
-
-        #tcp-request content reject if !whitelist
-        #tcp-request content track-sc0 src
+        #acl whitelist src map_ip(/etc/haproxy/acl-map,0.0.0.0.0)
         use_backend not_in_acl if !whitelist
         use_backend filter_app_http if whitelist
 
 
 backend not_in_acl
-        #tcp-request content capture dst len 15
-         #log-format "not in ACL: %[capture.req.hdr(0)]"
+        option log-separate-errors
         tcp-request content reject
 
 backend filter_app_http
         server filter1 10.0.0.208:4444 check
+
+
+# dynamic update
+# https://www.haproxy.com/de/documentation/aloha/9-5/traffic-management/lb-layer7/lb-update/
 ```
 
 ## socklog
