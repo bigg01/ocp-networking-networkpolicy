@@ -48,6 +48,21 @@ $ echo "show acl #0" |         sudo socat stdio /tmp/haproxy.sock
 $ echo "del acl #1 10.0.0.208" |         sudo socat stdio /tmp/haproxy.sock
 $ echo "show acl #1" |         sudo socat stdio /tmp/haproxy.sock
 ```
+# with haproxycm
+```
+/haproxycmd "add acl #1 10.0.0.208"
+
+$ haproxycmd  4  ./haproxycmd "show acl #1"
+0x5574290b9950 10.0.0.208
+
+$ ./haproxycmd "del acl #1 10.0.0.208"
+
+$ ./haproxycmd "show acl"
+# id (file) description
+0 (/etc/haproxy/acl-map-v12) pattern loaded from file '/etc/haproxy/acl-map-v12' used by acl at file '/etc/haproxy/haproxy6.cfg' line 41
+1 (/etc/haproxy/acl-map-v12-route) pattern loaded from file '/etc/haproxy/acl-map-v12-route' used by acl at file '/etc/haproxy/haproxy6.cfg' line 41
+2 () acl 'src' file '/etc/haproxy/haproxy6.cfg' line 41
+```
 
 cat haproxy6.cfg
 ```yaml
