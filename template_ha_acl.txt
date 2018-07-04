@@ -170,3 +170,14 @@ backend nodes
     
 cat file.map
 oli.local 10.0.0.4
+
+
+
+
+The problem with "%[]" is that it became widespread enough to let people
+believe it can be used everywhere. It's only valid in some arguments of
+the http-request actions, and in log formats of course. It cannot be used
+to describe ACL patterns since by definitions these patterns are constant.
+
+In your case, if you need to check that the combination of (source,cookie)
+matches one in your table, I think you could proceed like this :
