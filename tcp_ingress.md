@@ -139,3 +139,17 @@ https://github.com/amlweems/stun/blob/master/cmd/stuntcp/main.go
 
 
 https://medium.com/@olivier.ragain/haproxy-https-load-balancing-on-sni-207c17398d19
+
+
+
+```
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    haproxy.router.openshift.io/bindport: '9200'
+    haproxy.router.openshift.io/rawtcp: 'true'
+    openshift.io/host.generated: 'true'
+    
+    
+```
