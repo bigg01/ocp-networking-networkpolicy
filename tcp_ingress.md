@@ -132,3 +132,8 @@ MySQL [testdb]> show tables;
 
 
 ```
+
+
+## univversal sni redirect
+
+https://medium.com/@olivier.ragain/haproxy-https-load-balancing-on-sni-207c17398d19
