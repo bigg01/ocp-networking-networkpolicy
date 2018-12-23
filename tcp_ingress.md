@@ -13,7 +13,13 @@
    could work
 
  - option 4: create an openssl Server - and forward over SNI to TCP endpoint
+    https://gitlab.com/aleks001/openssl-server/tree/master
 
+ - option 5: uniq port on ingress router per annotation forward
+ 
+ 
+### auth ba annotation 
+https://github.com/bigg01/haproxy-ingress/blob/master/examples/auth/oauth/oauth2-proxy.yaml
 
 ```
 global
