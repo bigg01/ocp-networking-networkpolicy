@@ -88,7 +88,7 @@ backend webserver
 
 ```
 
-```
+```haproxy
 ############# guo
 # /var/lib/haproxy/conf/custom/haproxy-config.template
 frontend guomysql
@@ -98,7 +98,9 @@ frontend guomysql
 
 backend guomysqlbackend
     mode tcp
+    # IP:172.30.140.51 Hostname: mysql.dbtest.svc
     server guomysqlbackend 172.30.140.51:3306
+    
 ############# guo end
     
 ```
