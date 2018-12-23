@@ -7,7 +7,55 @@
    
  - option 2: build uniq ingress Router for TCP - port by annotation
  
-   PoC
+   ```
+     ############### tkggo tcp raw test
+# frontend
+{{ range $cfgIdx, $cfg := .State }}
+
+{{- if (isTrue (index $cfg.Annotations "haproxy.router.openshift.io/rawtcp")) }}
+
+  frontend public_tcp_raw_{{$cfgIdx}}
+
+      {{- if ne (env "ROUTER_SYSLOG_ADDRESS") ""}}
+
+    option tcplog
+
+      {{- end }}
+    # haproxy.router.openshift.io/bindport: '9200'
+    # haproxy.router.openshift.io/rawtcp: 'true'
+
+    {{- if (isInteger (index $cfg.Annotations "haproxy.router.openshift.io/bindport")) }}
+
+    bind :{{ index $cfg.Annotations "haproxy.router.openshift.io/bindport" }}
+
+        {{- end }}
+
+    default_backend be_tcp_raw{{$cfgIdx}}
+
+
+# backend 
+ backend be_tcp_raw{{$cfgIdx}}
+ mode tcp
+
+ {{- range $serviceUnitName, $weight := $cfg.ServiceUnitNames }}
+
+
+
+        {{- with $serviceUnit := index $.ServiceUnits $serviceUnitName }}
+
+          {{- range $idx, $endpoint := processEndpointsForAlias $cfg $serviceUnit ""}}
+
+    server {{$endpoint.ID}} {{$endpoint.IP}}:{{$endpoint.Port}} 
+
+                {{- end }}
+
+              {{- end }}
+
+     {{- end }}
+{{end}}
+{{end}} # end range
+  ################### tkggo eng raw
+   ```
    
  - option 3: using nodeports on the Router nodes forwarded with a service
    could work
