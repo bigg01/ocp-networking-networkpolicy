@@ -74,3 +74,59 @@ backend webserver
     redirect scheme https code 301 if !{ ssl_fc }
     server webserver-localhost 127.0.0.1:81
    ```
+
+
+#### add cusom config OCP HAPROXY
+```
+4  oc rsh router-1-65hz6 -- cat haproxy-config.template > haproxy-config.template
+ 1035  oc rsh router-1-65hz6  cat haproxy-config.template > haproxy-config.template
+ 1036  oc rsh router-1-65hz6 cat haproxy.config > haproxy.config
+ 1037  oc set env dc/router \
+ 1038  oc create configmap customrouter --from-file=haproxy-config.template
+ 1039  oc volume dc/router --add --overwrite     --name=config-volume     --mount-path=/var/lib/haproxy/conf/custom     --source='{"configMap": { "name": "customrouter"}}'
+ 1040  oc set env dc/router     TEMPLATE_FILE=/var/lib/haproxy/conf/custom/haproxy-config.template
+
+```
+
+```
+############# guo
+# /var/lib/haproxy/conf/custom/haproxy-config.template
+frontend guomysql
+    bind :3306
+    mode tcp
+    default_backend guomysqlbackend
+
+backend guomysqlbackend
+    mode tcp
+    server guomysqlbackend 172.30.140.51:3306
+############# guo end
+    
+```
+
+
+```
+mysql -u test1 -p -h 192.168.42.44 
+Enter password: 
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MySQL connection id is 413
+Server version: 5.7.21 MySQL Community Server (GPL)
+
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+MySQL [(none)]> use testdb;
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+MySQL [testdb]> show tables;
++------------------+
+| Tables_in_testdb |
++------------------+
+| MyGuests         |
++------------------+
+1 row in set (0.001 sec)
+
+
+```
