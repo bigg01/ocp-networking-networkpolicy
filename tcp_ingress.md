@@ -7,7 +7,7 @@
    
  - option 2: build uniq ingress Router for TCP - port by annotation
  
-   ```
+```haproxy
      ############### tkggo tcp raw test
 # frontend
 {{ range $cfgIdx, $cfg := .State }}
@@ -55,7 +55,7 @@
 {{end}}
 {{end}} # end range
   ################### tkggo eng raw
-   ```
+```
    
  - option 3: using nodeports on the Router nodes forwarded with a service
    could work
