@@ -12,6 +12,7 @@
  - option 3: using nodeports on the Router nodes forwarded with a service
    could work
 
+ - option 4: create an openssl Server - and forward over SNI to TCP endpoint
 
 
 ```
