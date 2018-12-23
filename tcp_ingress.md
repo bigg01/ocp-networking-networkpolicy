@@ -21,7 +21,11 @@
 ### auth ba annotation 
 https://github.com/bigg01/haproxy-ingress/blob/master/examples/auth/oauth/oauth2-proxy.yaml
 
-```
+### sni routing
+https://www.haproxy.com/de/blog/enhanced-ssl-load-balancing-with-server-name-indication-sni-tls-extension/
+
+
+```https://www.haproxy.com/de/blog/enhanced-ssl-load-balancing-with-server-name-indication-sni-tls-extension/
 global
   tune.ssl.default-dh-param 2048
 
