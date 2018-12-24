@@ -64,7 +64,8 @@
     https://gitlab.com/aleks001/openssl-server/tree/master
 
  - option 5: uniq port on ingress router per annotation forward
- 
+### lua auth
+https://github.com/TimWolla/haproxy-auth-request/blob/master/auth-request.lua
 ### basic auth by annotation
 https://blog.sleeplessbeastie.eu/2018/03/08/how-to-define-basic-authentication-on-haproxy/
  
