@@ -72,6 +72,8 @@ https://github.com/bigg01/haproxy-ingress/blob/master/examples/auth/oauth/oauth2
 ### sni routing
 https://www.haproxy.com/de/blog/enhanced-ssl-load-balancing-with-server-name-indication-sni-tls-extension/
 
+### modsecurity by annotation?
+https://github.com/bigg01/haproxy-ingress/tree/master/examples/modsecurity
 
 ```https://www.haproxy.com/de/blog/enhanced-ssl-load-balancing-with-server-name-indication-sni-tls-extension/
 global
