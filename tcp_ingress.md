@@ -65,8 +65,10 @@
 
  - option 5: uniq port on ingress router per annotation forward
  
+### basic auth by annotation
+https://blog.sleeplessbeastie.eu/2018/03/08/how-to-define-basic-authentication-on-haproxy/
  
-### auth ba annotation 
+### oauth2 by annotation 
 https://github.com/bigg01/haproxy-ingress/blob/master/examples/auth/oauth/oauth2-proxy.yaml
 
 ### sni routing
