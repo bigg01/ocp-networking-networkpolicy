@@ -1,6 +1,6 @@
 https://github.com/openshift/origin/blob/2b41d8b0a674ffec10cf7d97e2e635803ca07351/pkg/network/node/node.go#L215
 
-```
+```golang
 // Set node IP if required
 func (c *OsdnNodeConfig) setNodeIP() error {
 	if len(c.Hostname) == 0 {
@@ -37,8 +37,8 @@ func (c *OsdnNodeConfig) setNodeIP() error {
 	return nil
 }
 ```
-```
-https://github.com/openshift/origin/blob/edddaaf84d87f9667d6833a328e262a5fb0d6c34/pkg/network/node/egressip.go#L151
+```golang
+//https://github.com/openshift/origin/blob/edddaaf84d87f9667d6833a328e262a5fb0d6c34/pkg/network/node/egressip.go#L151
 
 func (eip *egressIPWatcher) assignEgressIP(egressIP, mark string) error {
 	if egressIP == eip.localIP {
@@ -98,15 +98,15 @@ https://github.com/vishvananda/netlink
 
 
 https://github.com/vishvananda/netlink/blob/028453c77ce572d3554b3873c654663283ac42a3/addr_linux.go#L17
-```
+```golang
 
 // AddrAdd will add an IP address to a link device.
 // Equivalent to: `ip addr add $addr dev $link`
 func AddrAdd(link Link, addr *Addr) error {
 	return pkgHandle.AddrAdd(link, addr)
 }
-
 ```
+```golang
 package main
 
 import (
