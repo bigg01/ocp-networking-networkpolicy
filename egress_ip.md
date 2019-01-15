@@ -37,4 +37,85 @@ func (c *OsdnNodeConfig) setNodeIP() error {
 	return nil
 }
 ```
+```
+https://github.com/openshift/origin/blob/edddaaf84d87f9667d6833a328e262a5fb0d6c34/pkg/network/node/egressip.go#L151
 
+func (eip *egressIPWatcher) assignEgressIP(egressIP, mark string) error {
+	if egressIP == eip.localIP {
+		return fmt.Errorf("desired egress IP %q is the node IP", egressIP)
+	}
+
+	if eip.testModeChan != nil {
+		eip.testModeChan <- fmt.Sprintf("claim %s", egressIP)
+		return nil
+	}
+
+	localEgressIPMaskLen, _ := eip.localEgressNet.Mask.Size()
+	egressIPNet := fmt.Sprintf("%s/%d", egressIP, localEgressIPMaskLen)
+	addr, err := netlink.ParseAddr(egressIPNet)
+	if err != nil {
+		return fmt.Errorf("could not parse egress IP %q: %v", egressIPNet, err)
+	}
+	if !eip.localEgressNet.Contains(addr.IP) {
+		return fmt.Errorf("egress IP %q is not in local network %s of interface %s", egressIP, eip.localEgressNet.String(), eip.localEgressLink.Attrs().Name)
+	}
+	err = netlink.AddrAdd(eip.localEgressLink, addr)
+	if err != nil {
+		if err == syscall.EEXIST {
+			glog.V(2).Infof("Egress IP %q already exists on %s", egressIPNet, eip.localEgressLink.Attrs().Name)
+		} else {
+			return fmt.Errorf("could not add egress IP %q to %s: %v", egressIPNet, eip.localEgressLink.Attrs().Name, err)
+		}
+	}
+	// Use arping to try to update other hosts ARP caches, in case this IP was
+	// previously active on another node. (Based on code from "ifup".)
+	go func() {
+		out, err := exec.Command("/sbin/arping", "-q", "-A", "-c", "1", "-I", eip.localEgressLink.Attrs().Name, egressIP).CombinedOutput()
+		if err != nil {
+			glog.Warningf("Failed to send ARP claim for egress IP %q: %v (%s)", egressIP, err, string(out))
+			return
+		}
+		time.Sleep(2 * time.Second)
+		_ = exec.Command("/sbin/arping", "-q", "-U", "-c", "1", "-I", eip.localEgressLink.Attrs().Name, egressIP).Run()
+	}()
+
+	if err := eip.iptables.AddEgressIPRules(egressIP, mark); err != nil {
+		return fmt.Errorf("could not add egress IP iptables rule: %v", err)
+	}
+
+	return nil
+}
+
+```
+
+eip.localEgressLink
+
+
+localEgressLink netlink.Link
+
+https://github.com/vishvananda/netlink
+
+
+
+https://github.com/vishvananda/netlink/blob/028453c77ce572d3554b3873c654663283ac42a3/addr_linux.go#L17
+```
+
+// AddrAdd will add an IP address to a link device.
+// Equivalent to: `ip addr add $addr dev $link`
+func AddrAdd(link Link, addr *Addr) error {
+	return pkgHandle.AddrAdd(link, addr)
+}
+
+```
+package main
+
+import (
+    "github.com/vishvananda/netlink"
+)
+
+func main() {
+    lo, _ := netlink.LinkByName("lo")
+    addr, _ := netlink.ParseAddr("169.254.169.254/32")
+    netlink.AddrAdd(lo, addr)
+}
+```
