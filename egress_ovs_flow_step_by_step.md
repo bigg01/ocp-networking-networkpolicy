@@ -31,7 +31,7 @@ root@ocpmaster01 origin]# ip a show|grep "tun" -A +2
 NODE_B_TUN_MAC="22:e9:5c:34:a4:83"
 
 ## NODE B
-```shell
+```console
 ip a show|grep "tun" -A +2
 10: tun0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1450 qdisc noqueue state UNKNOWN group default qlen 1000
     link/ether 22:3b:a9:a4:8e:0c brd ff:ff:ff:ff:ff:ff
@@ -41,7 +41,7 @@ ip a show|grep "tun" -A +2
 ```    
 NODE_B_TUN_MAC="22:3b:a9:a4:8e:0c"
 
-```sh
+```console
  docker exec -it k8s_openvswitch_ovs-xrtfv_openshift-sdn_d038855b-1ce4-11e9-be6e-9a2f895abae0_5 bash
  -d',' -f3,6,7-01 origin]# ovs-ofctl -O OpenFlow13 dump-flows br0 table=100| cut
 OFPST_FLOW reply (OF1.3) (xid=0x2):
@@ -179,7 +179,7 @@ listening on any, link-type LINUX_SLL (Linux cooked), capture size 262144 bytes
 ```
 
 ## works with second interface too
-```sh
+```console
 12: ens19: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP group default qlen 1000
     link/ether 2e:12:1d:8c:90:47 brd ff:ff:ff:ff:ff:ff
     inet 10.0.0.200/24 brd 10.0.0.255 scope global noprefixroute dynamic ens19
