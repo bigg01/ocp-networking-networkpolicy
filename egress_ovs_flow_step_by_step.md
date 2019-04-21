@@ -8,7 +8,7 @@ https://github.com/openshift/origin/blob/release-3.9/pkg/network/node/ovscontrol
 
 
 # egress by hand
-```sh
+```bash
 oc new-project egress-test3
 oc get netnamespace|grep egress-test3
 egress-test3            3064846    []
