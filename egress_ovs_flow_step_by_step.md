@@ -1,5 +1,11 @@
 ```
 
+https://github.com/openshift/origin/blob/c68d654128cc4ec776a183d20db1d24b51db07d5/pkg/network/node/iptables.go#L236
+
+https://github.com/openshift/origin/blob/c68d654128cc4ec776a183d20db1d24b51db07d5/pkg/network/node/egressip.go#L171
+
+https://github.com/openshift/origin/blob/release-3.9/pkg/network/node/ovscontroller.go#L714
+
 
 #egress by hand
 ```sh
