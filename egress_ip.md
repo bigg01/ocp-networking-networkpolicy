@@ -273,3 +273,87 @@ num  target     prot opt source               destination
 
 
 ```
+
+
+#egress by hand
+```sh
+oc new-project egress-test3
+oc get netnamespace|grep egress-test3
+egress-test3            3064846    []
+
+
+printf '%02X' 3064846 ; echo
+2EC40E
+
+
+ docker exec -it k8s_openvswitch_ovs-xrtfv_openshift-sdn_d038855b-1ce4-11e9-be6e-9a2f895abae0_5 bash
+ -d',' -f3,6,7-01 origin]# ovs-ofctl -O OpenFlow13 dump-flows br0 table=100| cut
+OFPST_FLOW reply (OF1.3) (xid=0x2):
+ table=100, priority=300,udp,tp_dst=4789 actions=drop
+ table=100, priority=200,tcp,nw_dst=10.0.0.3,tp_dst=53 actions=output:2
+ table=100, priority=200,udp,nw_dst=10.0.0.3,tp_dst=53 actions=output:2
+ table=100, priority=100,ip,reg0=0x6f7936 actions=move:NXM_NX_REG0[]->NXM_NX_TUN_ID[0..31],set_field:10.0.0.2->tun_dst,output:1
+ table=100, priority=100,ip,reg0=0xdf6553 actions=move:NXM_NX_REG0[]->NXM_NX_TUN_ID[0..31],set_field:10.0.0.2->tun_dst,output:1
+ table=100, priority=0 actions=goto_table:101
+ 
+ 
+ # add flow with vid from Node A to B
+ ## vid = 0x2EC40E , node b 10.0.0.2
+ ovs-ofctl add-flow br0 "table=100, priority=100,ip,reg0=0x2EC40E actions=move:NXM_NX_REG0[]->NXM_NX_TUN_ID[0..31],set_field:10.0.0.2->tun_dst,output:1" -O OpenFlow13
+ 
+ 
+ -d',' -f3,6,7-01 origin]# ovs-ofctl -O OpenFlow13 dump-flows br0 table=100| cut
+OFPST_FLOW reply (OF1.3) (xid=0x2):
+ table=100, priority=300,udp,tp_dst=4789 actions=drop
+ table=100, priority=200,tcp,nw_dst=10.0.0.3,tp_dst=53 actions=output:2
+ table=100, priority=200,udp,nw_dst=10.0.0.3,tp_dst=53 actions=output:2
+ table=100, priority=100,ip,reg0=0x6f7936 actions=move:NXM_NX_REG0[]->NXM_NX_TUN_ID[0..31],set_field:10.0.0.2->tun_dst,output:1
+ table=100, priority=100,ip,reg0=0xdf6553 actions=move:NXM_NX_REG0[]->NXM_NX_TUN_ID[0..31],set_field:10.0.0.2->tun_dst,output:1
+ table=100, priority=100,ip,reg0=0x2ec40e actions=move:NXM_NX_REG0[]->NXM_NX_TUN_ID[0..31],set_field:10.0.0.2->tun_dst,output:1 # added 
+ table=100, priority=0 actions=goto_table:101
+[root@ocpmaster01 origin]#
+ 
+ # on node B add OVS FLOW
+ ovs-ofctl -O OpenFlow13 dump-flows br0 table=100|cut -d',' -f3,6,7-
+OFPST_FLOW reply (OF1.3) (xid=0x2):
+ table=100, priority=300,udp,tp_dst=4789 actions=drop
+ table=100, priority=200,tcp,nw_dst=10.0.0.2,tp_dst=53 actions=output:2
+ table=100, priority=200,udp,nw_dst=10.0.0.2,tp_dst=53 actions=output:2
+ table=100, priority=100,ip,reg0=0x6f7936 actions=set_field:22:3b:a9:a4:8e:0c->eth_dst,set_field:0x6f7936->pkt_mark,goto_table:101
+ table=100, priority=100,ip,reg0=0xdf6553 actions=set_field:22:3b:a9:a4:8e:0c->eth_dst,set_field:0x1df6552->pkt_mark,goto_table:101
+ table=100, priority=0 actions=goto_table:101
+
+
+ovs-ofctl add-flow br0 "table=100,priority=123,ip,reg0=0x2EC40E actions=set_field:22:3b:a9:a4:8e:0c->eth_dst,set_field:0x2EC40E->pkt_mark,goto_table:101" -O OpenFlow13
+
+
+# node B - # add vid to vid
+
+ovs-ofctl -O OpenFlow13 dump-flows br0 table=100|cut -d',' -f3,6,7-
+OFPST_FLOW reply (OF1.3) (xid=0x2):
+ table=100, priority=300,udp,tp_dst=4789 actions=drop
+ table=100, priority=200,tcp,nw_dst=10.0.0.2,tp_dst=53 actions=output:2
+ table=100, priority=200,udp,nw_dst=10.0.0.2,tp_dst=53 actions=output:2
+ table=100, priority=100,ip,reg0=0x6f7936 actions=set_field:22:3b:a9:a4:8e:0c->eth_dst,set_field:0x6f7936->pkt_mark,goto_table:101
+ table=100, priority=100,ip,reg0=0xdf6553 actions=set_field:22:3b:a9:a4:8e:0c->eth_dst,set_field:0x1df6552->pkt_mark,goto_table:101
+ table=100, priority=123,ip,reg0=0x2ec40e actions=set_field:22:3b:a9:a4:8e:0c->eth_dst,set_field:0x2ec40e->pkt_mark,goto_table:101 # add vid to vid
+ table=100, priority=0 actions=goto_table:101
+
+# iptable create SNAT mark VID
+iptables -t nat -I OPENSHIFT-MASQUERADE -s 10.128.0.0/14 -m mark --mark 0x2EC40E -j SNAT --to-source 10.0.0.12
+[root@ocprouter01 origin]# iptables -t nat  --list OPENSHIFT-MASQUERADE -n --line-numbers
+Chain OPENSHIFT-MASQUERADE (1 references)
+num  target     prot opt source               destination
+1    SNAT       all  --  10.128.0.0/14        0.0.0.0/0            mark match 0x2ec40e to:10.0.0.12
+2    SNAT       all  --  10.128.0.0/14        0.0.0.0/0            mark match 0x6f7936 to:10.0.0.11
+3    SNAT       all  --  10.128.0.0/14        0.0.0.0/0            mark match 0x6f7936 to:10.0.0.12
+4    SNAT       all  --  10.128.0.0/14        0.0.0.0/0            mark match 0x1df6552 to:10.0.0.12
+5    OPENSHIFT-MASQUERADE-2  all  --  10.128.0.0/14        0.0.0.0/0            /* masquerade pod-to-external traffic */
+
+
+# go to pod and check curl external traffic 
+
+# tcpdump on egress node
+tcpdump -i any -e -nn|grep "10.0.0.12"
+
+```
