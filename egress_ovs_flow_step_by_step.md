@@ -8,7 +8,7 @@ https://github.com/openshift/origin/blob/release-3.9/pkg/network/node/ovscontrol
 
 
 # egress by hand
-```bash
+```console
 oc new-project egress-test3
 oc get netnamespace|grep egress-test3
 egress-test3            3064846    []
@@ -19,7 +19,7 @@ egress-test3            3064846    []
 
 # tun0 interface
 ## NODE A
-```sh
+```console
 root@ocpmaster01 origin]# ip a show|grep "tun" -A +2
 10: tun0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1450 qdisc noqueue state UNKNOWN group default qlen 1000
     link/ether 22:e9:5c:34:a4:83 brd ff:ff:ff:ff:ff:ff
