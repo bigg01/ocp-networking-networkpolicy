@@ -172,7 +172,11 @@ echo $((0xdf6553))
 
 # node B Egress
 
-
+# convert hex to ip
+printf '%02X' 10 0 0 11 ; echo
+0A00000B
+[root@ocprouter01 origin]# printf '%d.%d.%d.%d\n' `echo 0A00000B | sed -r 's/(..)/0x\1 /g'`
+10.0.0.11
 
 tcpdump -i any -e -nn|grep "10.0.0.11"
 
@@ -184,7 +188,10 @@ OFPST_FLOW reply (OF1.3) (xid=0x2):
  table=100, priority=100,ip,reg0=0xdf6553 actions=set_field:22:3b:a9:a4:8e:0c->eth_dst,set_field:0x1df6552->pkt_mark,goto_table:101
  table=100, priority=100,ip,reg0=0x6f7936 actions=set_field:22:3b:a9:a4:8e:0c->eth_dst,set_field:0x6f7936->pkt_mark,goto_table:101
  table=100, priority=0 actions=goto_table:101
+ 
+ 
+ ovs-ofctl add-flow br0 "table=100,priority=123,ip,reg0=0x6f7936 actions=set_field:22:3b:a9:a4:8e:0c->eth_dst,set_field:0x6f7936->pkt_mark,goto_table:101" -O OpenFlow13
 
-
+ovs-ofctl del-flows br0 "table=100,ip,reg0=0x6f7936" -O OpenFlow13
 
 ```
