@@ -226,4 +226,25 @@ bind: Cannot assign requested address
 
 
 
+ovs-ofctl -O OpenFlow13 dump-flows br0 | cut -d',' -f3|grep table| uniq
+ table=0
+ table=10
+ table=20
+ table=21
+ table=25
+ table=30
+ table=40
+ table=50
+ table=60
+ table=70
+ table=80
+ table=90
+ table=100
+ table=101
+ table=110
+ table=111
+ table=120
+ table=253
+
+
 ```
