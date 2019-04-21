@@ -260,4 +260,16 @@ SNAT       all  --  10.128.0.0/14        0.0.0.0/0            mark match 0x6f793
 
 
 
+
+ iptables -t nat -I OPENSHIFT-MASQUERADE -s 10.128.0.0/14 -m mark --mark 0x6f7936 -j SNAT --to-source 10.0.0.12
+[root@ocprouter01 origin]# iptables -t nat  --list OPENSHIFT-MASQUERADE -n --line-numbers
+Chain OPENSHIFT-MASQUERADE (1 references)
+num  target     prot opt source               destination
+1    SNAT       all  --  10.128.0.0/14        0.0.0.0/0            mark match 0x6f7936 to:10.0.0.12
+2    SNAT       all  --  10.128.0.0/14        0.0.0.0/0            mark match 0x1df6552 to:10.0.0.12
+3    SNAT       all  --  10.128.0.0/14        0.0.0.0/0            mark match 0x6f7936 to:10.0.0.11
+4    OPENSHIFT-MASQUERADE-2  all  --  10.128.0.0/14        0.0.0.0/0            /* masquerade pod-to-external traffic */
+[root@ocprouter01 origin]# iptables -t nat -D OPENSHIFT-MASQUERADE  4
+
+
 ```
