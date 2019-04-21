@@ -14,7 +14,7 @@ oc get netnamespace|grep egress-test3
 egress-test3            3064846    []
 ```
 
-`printf '%02X' 3064846 ; echo
+`printf '%02X' 3064846 ; echo`
 2EC40E
 
 # tun0 interface
