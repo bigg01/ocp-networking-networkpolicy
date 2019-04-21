@@ -194,4 +194,36 @@ OFPST_FLOW reply (OF1.3) (xid=0x2):
 
 ovs-ofctl del-flows br0 "table=100,ip,reg0=0x6f7936" -O OpenFlow13
 
+
+
+
+
+
+ ip addr add 10.0.0.12/24  dev ens18
+[root@ocprouter01 origin]#  /sbin/arping -q -A -c 1 -I  ens18 10.0.0.12
+[root@ocprouter01 origin]# ip neigh
+10.0.0.12 dev ens18  FAILED
+10.128.1.224 dev tun0 lladdr 0a:58:0a:80:01:e0 STALE
+10.128.1.206 dev tun0 lladdr 0a:58:0a:80:01:ce STALE
+10.0.0.202 dev ens18 lladdr 38:c9:86:28:94:89 REACHABLE
+10.0.0.13 dev ens18  FAILED
+10.0.0.3 dev ens18 lladdr 9a:2f:89:5a:ba:e0 REACHABLE
+10.128.1.226 dev tun0 lladdr 0a:58:0a:80:01:e2 STALE
+10.0.0.155 dev ens18  FAILED
+10.0.0.1 dev ens18  FAILED
+10.128.0.1 dev tun0 lladdr 22:e9:5c:34:a4:83 STALE
+10.128.1.222 dev tun0 lladdr 0a:58:0a:80:01:de STALE
+10.0.0.4 dev ens18 lladdr 84:2b:2b:b1:7c:04 STALE
+10.130.0.123 dev tun0 lladdr 0a:58:0a:82:00:7b STALE
+10.0.0.138 dev ens18 lladdr 7c:b7:33:03:48:3f STALE
+10.0.0.156 dev ens18 lladdr 00:11:32:4e:6f:09 STALE
+2a02:120b:c3d8:30a0:7eb7:33ff:fe03:483f dev ens18 lladdr 7c:b7:33:03:48:3f router STALE
+fe80::7eb7:33ff:fe03:483f dev ens18 lladdr 7c:b7:33:03:48:3f router STALE
+[root@ocprouter01 origin]#  ip addr del 10.0.0.12/24  dev ens18
+[root@ocprouter01 origin]#  /sbin/arping -q -A -c 1 -I  ens18 10.0.0.12
+bind: Cannot assign requested address
+[root@ocprouter01 origin]#
+
+
+
 ```
