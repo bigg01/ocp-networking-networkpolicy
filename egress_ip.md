@@ -119,3 +119,72 @@ func main() {
     netlink.AddrAdd(lo, addr)
 }
 ```
+
+
+
+```sh
+# hacking egress route
+oc patch hostsubnet ocprouter01 -p '{"egressIPs": ["10.0.0.11","10.0.0.13"]}'
+oc patch netnamespace egress-test2 -p '{"egressIPs": ["10.0.0.13"]}'
+oc patch netnamespace egress-test -p '{"egressIPs": ["10.0.0.11"]}'
+
+
+c get netnamespace
+NAME                    NETID      EGRESS IPS
+dbtest                  8935821    []
+default                 0          []
+egress-test             7305526    [10.0.0.11]
+egress-test2            14640467   [10.0.0.13]
+gitea                   12235633   []
+kube-public             10858048   []
+kube-system             9880231    []
+management-infra        5610426    []
+minio                   6037138    []
+mygotty                 8566492    []
+openshift               14211522   []
+openshift-console       16341554   []
+openshift-infra         13958715   []
+openshift-logging       1898091    []
+openshift-node          5992634    []
+openshift-sdn           6592413    []
+openshift-web-console   8056251    []
+openssl                 9681253    []
+
+
+# node A
+ docker exec -it k8s_openvswitch_ovs-xrtfv_openshift-sdn_d038855b-1ce4-11e9-be6e-9a2f895abae0_5 bash
+[root@ocpmaster01 origin]# ovs-ofctl -O OpenFlow13 dump-flows br0 table=100 --color
+OFPST_FLOW reply (OF1.3) (xid=0x2):
+ cookie=0x0, duration=8201.224s, table=100, n_packets=0, n_bytes=0, priority=300,udp,tp_dst=4789 actions=drop
+ cookie=0x0, duration=8201.224s, table=100, n_packets=0, n_bytes=0, priority=200,tcp,nw_dst=10.0.0.3,tp_dst=53 actions=output:2
+ cookie=0x0, duration=8201.224s, table=100, n_packets=468, n_bytes=43458, priority=200,udp,nw_dst=10.0.0.3,tp_dst=53 actions=output:2
+ cookie=0x0, duration=505.625s, table=100, n_packets=0, n_bytes=0, priority=100,ip,reg0=0xdf6553 actions=move:NXM_NX_REG0[]->NXM_NX_TUN_ID[0..31],set_field:10.0.0.2->tun_dst,output:1
+ cookie=0x0, duration=96.343s, table=100, n_packets=0, n_bytes=0, priority=100,ip,reg0=0x6f7936 actions=move:NXM_NX_REG0[]->NXM_NX_TUN_ID[0..31],set_field:10.0.0.2->tun_dst,output:1
+ cookie=0x0, duration=8201.224s, table=100, n_packets=18065, n_bytes=1789972, priority=0 actions=goto_table:101
+
+# get vid
+echo $((0xdf6553))
+14640467 = egress-test2
+
+ echo $((0x6f7936))
+7305526 = egress-test
+
+
+# node B Egress
+
+
+
+tcpdump -i any -e -nn|grep "10.0.0.11"
+
+ovs-ofctl -O OpenFlow13 dump-flows br0 table=100| cut -d',' -f3,6,7-
+OFPST_FLOW reply (OF1.3) (xid=0x2):
+ table=100, priority=300,udp,tp_dst=4789 actions=drop
+ table=100, priority=200,tcp,nw_dst=10.0.0.2,tp_dst=53 actions=output:2
+ table=100, priority=200,udp,nw_dst=10.0.0.2,tp_dst=53 actions=output:2
+ table=100, priority=100,ip,reg0=0xdf6553 actions=set_field:22:3b:a9:a4:8e:0c->eth_dst,set_field:0x1df6552->pkt_mark,goto_table:101
+ table=100, priority=100,ip,reg0=0x6f7936 actions=set_field:22:3b:a9:a4:8e:0c->eth_dst,set_field:0x6f7936->pkt_mark,goto_table:101
+ table=100, priority=0 actions=goto_table:101
+
+
+
+```
