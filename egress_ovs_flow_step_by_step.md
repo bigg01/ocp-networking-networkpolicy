@@ -31,7 +31,7 @@ root@ocpmaster01 origin]# ip a show|grep "tun" -A +2
 NODE_B_TUN_MAC="22:e9:5c:34:a4:83"
 
 ## NODE B
-```sh
+```shell
 ip a show|grep "tun" -A +2
 10: tun0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1450 qdisc noqueue state UNKNOWN group default qlen 1000
     link/ether 22:3b:a9:a4:8e:0c brd ff:ff:ff:ff:ff:ff
