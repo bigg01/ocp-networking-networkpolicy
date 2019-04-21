@@ -247,4 +247,17 @@ ovs-ofctl -O OpenFlow13 dump-flows br0 | cut -d',' -f3|grep table| uniq
  table=253
 
 
+# vid maps over vxlan to vid and iptable makes SNAT
+iptables -t nat --list -n|grep '10.0.0.11'
+SNAT       all  --  10.128.0.0/14        0.0.0.0/0            mark match 0x6f7936 to:10.0.0.11
+[root@ocprouter01 origin]# iptables -t nat --list -n|grep '10.0.0.12'
+SNAT       all  --  10.128.0.0/14        0.0.0.0/0            mark match 0x1df6552 to:10.0.0.12
+[root@ocprouter01 origin]# iptables -t nat --list -n|grep '0x6f7936'
+SNAT       all  --  10.128.0.0/14        0.0.0.0/0            mark match 0x6f7936 to:10.0.0.11
+[root@ocprouter01 origin]# iptables -t nat --list -n|grep '10.0.0.11'^C
+[root@ocprouter01 origin]# ovs-ofctl -O OpenFlow13 dump-flows br0 table=100|cut -d',' -f3,6,7- |grep 0x6f7936
+ table=100, priority=100,ip,reg0=0x6f7936 actions=set_field:22:3b:a9:a4:8e:0c->eth_dst,set_field:0x6f7936->pkt_mark,goto_table:101
+
+
+
 ```
