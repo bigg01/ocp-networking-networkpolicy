@@ -1,4 +1,4 @@
-```
+
 
 https://github.com/openshift/origin/blob/c68d654128cc4ec776a183d20db1d24b51db07d5/pkg/network/node/iptables.go#L236
 
@@ -7,38 +7,41 @@ https://github.com/openshift/origin/blob/c68d654128cc4ec776a183d20db1d24b51db07d
 https://github.com/openshift/origin/blob/release-3.9/pkg/network/node/ovscontroller.go#L714
 
 
-#egress by hand
+# egress by hand
 ```sh
 oc new-project egress-test3
 oc get netnamespace|grep egress-test3
 egress-test3            3064846    []
-
+```
 
 printf '%02X' 3064846 ; echo
 2EC40E
 
 # tun0 interface
 ## NODE A
+```sh
 root@ocpmaster01 origin]# ip a show|grep "tun" -A +2
 10: tun0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1450 qdisc noqueue state UNKNOWN group default qlen 1000
     link/ether 22:e9:5c:34:a4:83 brd ff:ff:ff:ff:ff:ff
     inet 10.128.0.1/23 brd 10.128.1.255 scope global tun0
        valid_lft forever preferred_lft forever
 11: veth80959efb@if3: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1450 qdisc noqueue master ovs-system state UP group defaultff
+```
 
 NODE_B_TUN_MAC="22:e9:5c:34:a4:83"
 
 ## NODE B
+```sh
 ip a show|grep "tun" -A +2
 10: tun0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1450 qdisc noqueue state UNKNOWN group default qlen 1000
     link/ether 22:3b:a9:a4:8e:0c brd ff:ff:ff:ff:ff:ff
     inet 10.130.0.1/23 brd 10.130.1.255 scope global tun0
        valid_lft forever preferred_lft forever
     inet6 fe80::203b:a9ff:fea4:8e0c/64 scope link
-    
+```    
 NODE_B_TUN_MAC="22:3b:a9:a4:8e:0c"
 
-
+```sh
  docker exec -it k8s_openvswitch_ovs-xrtfv_openshift-sdn_d038855b-1ce4-11e9-be6e-9a2f895abae0_5 bash
  -d',' -f3,6,7-01 origin]# ovs-ofctl -O OpenFlow13 dump-flows br0 table=100| cut
 OFPST_FLOW reply (OF1.3) (xid=0x2):
