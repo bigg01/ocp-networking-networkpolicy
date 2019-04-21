@@ -442,3 +442,24 @@ listening on any, link-type LINUX_SLL (Linux cooked), capture size 262144 bytes
 343 packets received by filter
 
 ```
+
+## works with second interface too
+```sh
+12: ens19: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP group default qlen 1000
+    link/ether 2e:12:1d:8c:90:47 brd ff:ff:ff:ff:ff:ff
+    inet 10.0.0.200/24 brd 10.0.0.255 scope global noprefixroute dynamic ens19
+       valid_lft 86031sec preferred_lft 86031sec
+    inet6 2a02:120b:c3d8:30a0:8031:5204:8258:224a/64 scope global noprefixroute dynamic
+       valid_lft 86368sec preferred_lft 14368sec
+    inet6 fe80::8f91:6286:5627:6be9/64 scope link noprefixroute
+       valid_lft forever preferred_lft forever
+e-numbersrouter01 origin]# iptables -t nat  --list OPENSHIFT-MASQUERADE -n --line
+Chain OPENSHIFT-MASQUERADE (1 references)
+num  target     prot opt source               destination
+1    SNAT       all  --  10.128.0.0/14        0.0.0.0/0            mark match 0x2ec40e to:10.0.0.200
+2    SNAT       all  --  10.128.0.0/14        0.0.0.0/0            mark match 0x6f7936 to:10.0.0.11
+3    SNAT       all  --  10.128.0.0/14        0.0.0.0/0            mark match 0x6f7936 to:10.0.0.12
+4    SNAT       all  --  10.128.0.0/14        0.0.0.0/0            mark match 0x1df6552 to:10.0.0.12
+5    OPENSHIFT-MASQUERADE-2  all  --  10.128.0.0/14        0.0.0.0/0            /* masquerade pod-to-external traffic */
+[root@ocprouter01 origin]#
+```
