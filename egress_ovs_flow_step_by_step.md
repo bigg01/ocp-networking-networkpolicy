@@ -281,3 +281,41 @@ OFPST_PORT_DESC reply (OF1.3) (xid=0x3):
      state:      LINK_DOWN
      speed: 0 Mbps now, 0 Mbps max
 OFPT_GET_CONFIG_REPLY (OF1.3) (xid=0x5): frags=nx-match miss_send_len=0
+
+
+
+ovs-vsctl show
+4c610e4c-3dd2-4f08-ac46-956fe401f0f8
+    Bridge "br0"
+        fail_mode: secure
+        Port "vethcd8eac3e"
+            Interface "vethcd8eac3e"
+        Port "veth2519fc46"
+            Interface "veth2519fc46"
+        Port "veth70b8cc96"
+            Interface "veth70b8cc96"
+        Port "veth9e0031e9"
+            Interface "veth9e0031e9"
+        Port "veth0c212d3e"
+            Interface "veth0c212d3e"
+        Port "vxlan0"
+            Interface "vxlan0"
+                type: vxlan
+                options: {dst_port="4789", key=flow, remote_ip=flow}
+        Port "veth765d118d"
+            Interface "veth765d118d"
+        Port "veth7ad73a21"
+            Interface "veth7ad73a21"
+        Port "veth079af6c0"
+            Interface "veth079af6c0"
+        Port "tun0"
+            Interface "tun0"
+                type: internal
+        Port "veth1b479575"
+            Interface "veth1b479575"
+        Port "br0"
+            Interface "br0"
+                type: internal
+    ovs_version: "2.7.0"
+    
+ ``
