@@ -216,3 +216,68 @@ OFPST_FLOW reply (OF1.3) (xid=0x2):
  table=100, priority=100,reg0=0x2ec40e actions=drop
  table=100, priority=0 actions=goto_table:101
 ```
+
+```console
+ovs-ofctl -O OpenFlow13 show br0
+OFPT_FEATURES_REPLY (OF1.3) (xid=0x2): dpid:0000669d59a55246
+n_tables:254, n_buffers:0
+capabilities: FLOW_STATS TABLE_STATS PORT_STATS GROUP_STATS QUEUE_STATS
+OFPST_PORT_DESC reply (OF1.3) (xid=0x3):
+ 1(vxlan0): addr:06:84:b7:b3:1c:f6
+     config:     0
+     state:      0
+     speed: 0 Mbps now, 0 Mbps max
+ 2(tun0): addr:d6:de:2d:d3:a9:70
+     config:     0
+     state:      0
+     speed: 0 Mbps now, 0 Mbps max
+ 3(veth70b8cc96): addr:82:49:a8:2b:dc:37
+     config:     0
+     state:      0
+     current:    10GB-FD COPPER
+     speed: 10000 Mbps now, 0 Mbps max
+ 4(vethcd8eac3e): addr:a6:e0:aa:d2:a9:30
+     config:     0
+     state:      0
+     current:    10GB-FD COPPER
+     speed: 10000 Mbps now, 0 Mbps max
+ 5(veth2519fc46): addr:1a:54:fe:95:a7:4c
+     config:     0
+     state:      0
+     current:    10GB-FD COPPER
+     speed: 10000 Mbps now, 0 Mbps max
+ 6(veth765d118d): addr:ba:11:76:3f:b2:69
+     config:     0
+     state:      0
+     current:    10GB-FD COPPER
+     speed: 10000 Mbps now, 0 Mbps max
+ 7(veth7ad73a21): addr:5e:65:6c:9f:b2:14
+     config:     0
+     state:      0
+     current:    10GB-FD COPPER
+     speed: 10000 Mbps now, 0 Mbps max
+ 8(veth079af6c0): addr:1e:51:44:46:9b:8b
+     config:     0
+     state:      0
+     current:    10GB-FD COPPER
+     speed: 10000 Mbps now, 0 Mbps max
+ 9(veth0c212d3e): addr:0e:c4:be:a1:9a:fe
+     config:     0
+     state:      0
+     current:    10GB-FD COPPER
+     speed: 10000 Mbps now, 0 Mbps max
+ 10(veth9e0031e9): addr:f6:a2:9d:63:2e:ff
+     config:     0
+     state:      0
+     current:    10GB-FD COPPER
+     speed: 10000 Mbps now, 0 Mbps max
+ 11(veth1b479575): addr:52:90:84:72:61:8b
+     config:     0
+     state:      0
+     current:    10GB-FD COPPER
+     speed: 10000 Mbps now, 0 Mbps max
+ LOCAL(br0): addr:66:9d:59:a5:52:46
+     config:     PORT_DOWN
+     state:      LINK_DOWN
+     speed: 0 Mbps now, 0 Mbps max
+OFPT_GET_CONFIG_REPLY (OF1.3) (xid=0x5): frags=nx-match miss_send_len=0
