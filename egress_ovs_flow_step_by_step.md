@@ -201,8 +201,8 @@ num  target     prot opt source               destination
 
 
 ## 2 target with diffrent prios
-0x2ec40e -> priority=100 set_field:10.0.0.2
-0x2ec40e -> priority=101 set_field:10.0.0.7
+`0x2ec40e -> priority=100 set_field:10.0.0.2`
+`0x2ec40e -> priority=101 set_field:10.0.0.7`
 ```console
 # ovs-ofctl -O OpenFlow13 dump-flows br0 table=100|cut -d',' -f3,6,7-
 OFPST_FLOW reply (OF1.3) (xid=0x2):
