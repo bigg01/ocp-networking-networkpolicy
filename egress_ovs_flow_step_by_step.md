@@ -198,3 +198,21 @@ num  target     prot opt source               destination
 5    OPENSHIFT-MASQUERADE-2  all  --  10.128.0.0/14        0.0.0.0/0            /* masquerade pod-to-external traffic */
 [root@ocprouter01 origin]#
 ```
+
+
+## 2 target with diffrent prios
+0x2ec40e -> priority=100 set_field:10.0.0.2
+0x2ec40e -> priority=101 set_field:10.0.0.7
+```console
+# ovs-ofctl -O OpenFlow13 dump-flows br0 table=100|cut -d',' -f3,6,7-
+OFPST_FLOW reply (OF1.3) (xid=0x2):
+ table=100, priority=300,udp,tp_dst=4789 actions=drop
+ table=100, priority=200,tcp,nw_dst=10.0.0.3,tp_dst=53 actions=output:2
+ table=100, priority=200,udp,nw_dst=10.0.0.3,tp_dst=53 actions=output:2
+ table=100, priority=100,ip,reg0=0x6f7936 actions=move:NXM_NX_REG0[]->NXM_NX_TUN_ID[0..31],set_field:10.0.0.2->tun_dst,output:1
+ table=100, priority=100,ip,reg0=0x2ec40e actions=move:NXM_NX_REG0[]->NXM_NX_TUN_ID[0..31],set_field:10.0.0.7->tun_dst,output:1
+ table=100, priority=101,ip,reg0=0x2ec40e actions=move:NXM_NX_REG0[]->NXM_NX_TUN_ID[0..31],set_field:10.0.0.2->tun_dst,output:1
+ table=100, priority=100,reg0=0xdf6553 actions=drop
+ table=100, priority=100,reg0=0x2ec40e actions=drop
+ table=100, priority=0 actions=goto_table:101
+```
