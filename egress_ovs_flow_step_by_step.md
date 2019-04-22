@@ -318,4 +318,47 @@ ovs-vsctl show
                 type: internal
     ovs_version: "2.7.0"
     
- ``
+    
+ ovs-ofctl -O OpenFlow13 dump-ports br0
+OFPST_PORT reply (OF1.3) (xid=0x2): 12 ports
+  port 11: rx pkts=2059, bytes=324426, drop=0, errs=0, frame=0, over=0, crc=0
+           tx pkts=2419, bytes=292455, drop=0, errs=0, coll=0
+           duration=3394.562s
+  port 10: rx pkts=4632, bytes=5610009, drop=0, errs=0, frame=0, over=0, crc=0
+           tx pkts=4813, bytes=571914, drop=0, errs=0, coll=0
+           duration=3398.715s
+  port  8: rx pkts=7373, bytes=26082708, drop=0, errs=0, frame=0, over=0, crc=0
+           tx pkts=7806, bytes=598614, drop=0, errs=0, coll=0
+           duration=3404.297s
+  port LOCAL: rx pkts=0, bytes=0, drop=0, errs=0, frame=0, over=0, crc=0
+           tx pkts=0, bytes=0, drop=0, errs=0, coll=0
+           duration=3419.323s
+  port  9: rx pkts=7480, bytes=26105746, drop=0, errs=0, frame=0, over=0, crc=0
+           tx pkts=7818, bytes=658812, drop=0, errs=0, coll=0
+           duration=3404.009s
+  port  5: rx pkts=3495, bytes=375831, drop=0, errs=0, frame=0, over=0, crc=0
+           tx pkts=4759, bytes=400533, drop=0, errs=0, coll=0
+           duration=3418.688s
+  port  1: rx pkts=56, bytes=63126, drop=?, errs=?, frame=?, over=?, crc=?
+           tx pkts=106, bytes=24370, drop=?, errs=?, coll=?
+           duration=3419.270s
+  port  4: rx pkts=7360, bytes=26153148, drop=0, errs=0, frame=0, over=0, crc=0
+           tx pkts=7752, bytes=595224, drop=0, errs=0, coll=0
+           duration=3418.842s
+  port  6: rx pkts=18, bytes=1284, drop=0, errs=0, frame=0, over=0, crc=0
+           tx pkts=3, bytes=158, drop=0, errs=0, coll=0
+           duration=3418.611s
+  port  7: rx pkts=6284, bytes=2498120, drop=0, errs=0, frame=0, over=0, crc=0
+           tx pkts=8109, bytes=845490, drop=0, errs=0, coll=0
+           duration=3418.518s
+  port  2: rx pkts=37595, bytes=86345484, drop=0, errs=0, frame=0, over=0, crc=0
+           tx pkts=42549, bytes=3657606, drop=0, errs=0, coll=0
+           duration=3419.243s
+  port  3: rx pkts=243, bytes=12642, drop=0, errs=0, frame=0, over=0, crc=0
+           tx pkts=228, bytes=14696, drop=0, errs=0, coll=0
+           duration=3418.921s
+    
+    
+    
+    
+ ```
