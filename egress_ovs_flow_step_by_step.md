@@ -41,7 +41,7 @@ ip a show|grep "tun" -A +2
 ```    
 NODE_B_TUN_MAC="22:3b:a9:a4:8e:0c"
 
-```sh
+```bash
  docker exec -it k8s_openvswitch_ovs-xrtfv_openshift-sdn_d038855b-1ce4-11e9-be6e-9a2f895abae0_5 bash
  -d',' -f3,6,7-01 origin]# ovs-ofctl -O OpenFlow13 dump-flows br0 table=100| cut
 OFPST_FLOW reply (OF1.3) (xid=0x2):
