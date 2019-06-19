@@ -85,7 +85,11 @@ oc patch netnamespace placeholder-egress -p '{"egressIPs": ["10.0.0.11"]}'
 oc get netnamespace|grep "\.11"
 placeholder-egress      5349411    [10.0.0.11]
 
-oc patch netnamespace egress-test -p '{"netid": "5349411"]}'
+oc patch netnamespace egress-test -p '{"netid": 5349411}'
+
+[root@ocpmaster01 guo]# oc get netnamespace|grep 5349411
+egress-test             5349411    []
+placeholder-egress      5349411    [10.0.0.11]
 
 
 ```
