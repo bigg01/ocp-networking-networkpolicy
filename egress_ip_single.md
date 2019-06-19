@@ -11,7 +11,16 @@ ip a show ens18 |grep .11
 ```
 ### test 
 ```
-$ curl -v 10.0.0.4:8080
+ curl -v 10.0.0.4:8080
+* About to connect() to 10.0.0.4 port 8080 (#0)
+*   Trying 10.0.0.4...
+* Connected to 10.0.0.4 (10.0.0.4) port 8080 (#0)
+> GET / HTTP/1.1
+> User-Agent: curl/7.29.0
+> Host: 10.0.0.4:8080
+> Accept: */*
+>
+< HTTP/1.1 200 OK
 ```
 # scenario 1 x egress node 2x NS one IP:boom:
 ```
