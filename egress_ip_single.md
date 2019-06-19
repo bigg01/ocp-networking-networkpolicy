@@ -23,7 +23,7 @@ egress-test3            3064846    []
 egress-v2               9248244    []
 ```
 
-# scenario 1 x node 1x NS 
+# scenario 1 x node 1x NS one IP
 ## assign IP to 1 NODE :white_check_mark:
 ```
 oc patch hostsubnet ocprouter01 -p '{"egressIPs": ["10.0.0.11"]}'
@@ -33,6 +33,15 @@ oc patch netnamespace egress-test -p '{"egressIPs": ["10.0.0.11"]}'
 ip a show ens18 |grep .11
     inet 10.0.0.11/24 brd 10.0.0.255 scope global secondary ens18
 ```
+### test 
+$ curl -v 10.0.0.4:8080
 
-
-:boom:
+# scenario 1 x node 2x NS same IP
+```
+oc patch netnamespace egress-test2 -p '{"egressIPs": ["10.0.0.11"]}'
+--> LOG egressip.go:356] Multiple namespaces (7305526, 14640467) claiming EgressIP 10.0.0.11
+```
+# :boom: IP remove from the Node
+```
+ip a show ens18 |grep .1
+```
