@@ -23,6 +23,6 @@ placeholder-egress      12824095   [10.0.0.11]
 
 NAME          HOST          HOST IP    SUBNET          EGRESS CIDRS    EGRESS IPS
 ocpmaster01   ocpmaster01   10.0.0.3   10.128.0.0/23   []              []
-ocprouter01   ocprouter01   10.0.0.2   10.130.0.0/23   [10.0.0.0/24]   [10.0.0.11]
-ocprouter02   ocprouter02   10.0.0.7   10.129.0.0/23   [10.0.0.0/24]   [10.0.0.12]
+DC1 ocprouter01   ocprouter01   10.0.0.2   10.130.0.0/23   [10.0.0.0/24]   [10.0.0.11]
+DC2 ocprouter02   ocprouter02   10.0.0.7   10.129.0.0/23   [10.0.0.0/24]   [10.0.0.12]
 ```
