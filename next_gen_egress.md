@@ -3,14 +3,14 @@
 We must order a Mobiltiy Range Subnet for each Netzone. We will assign on a DC1 and DC2 Egress nodes the mobility Range.
 Failover will happen if egress node disapear automaticly. Egress IP will be assigned randomly. Egress NetworkPolicy will fillter egress Traffic.  Looks pritty cool! probelm Egress Policy can only be filtered with IPs and not with Pors.
 
-:heavy_plus_sign: tls egress works by default
-:heavy_plus_sign: Egress inZone works by defautl if EgressNetpol has Zone IPranges configured
-:heavy_plus_sign: no Haproxy
-:heavy_plus_sign: socks/squid
-:heavy_plus_sign: socks/squid
-:heavy_plus_sign: ip does failover on egress node if node disapears
-:heavy_minus_sign: egressPolicy cannot filter on Ports
-:heavy_minus_sign: egress routing can only by on one DC Egress nodes 
+- :heavy_plus_sign: tls egress works by default
+- :heavy_plus_sign: Egress inZone works by defautl if EgressNetpol has Zone IPranges configured
+- :heavy_plus_sign: no Haproxy
+- :heavy_plus_sign: socks/squid
+- :heavy_plus_sign: socks/squid
+- :heavy_plus_sign: ip does failover on egress node if node disapears
+- :heavy_minus_sign: egressPolicy cannot filter on Ports
+- :heavy_minus_sign: egress routing can only by on one DC Egress nodes 
 
 |Zone |Range |EgressNode DC1 |EgressNode DC2   |   |   |
 |---|---|---|---|---|---|
