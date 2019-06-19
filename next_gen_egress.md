@@ -22,6 +22,8 @@ How big? /23 510
 * 1 x P Cluster1 = V1 = 1 subnet VM + 1 subnet Metal = 2
 * 1 x P Cluster2 = V1 = 1 subnet VM + 1 subnet Metal = 2
 
+Max Ip on a interface: The maximum would be 4,294,967,294 IP addresses (assuming you're talking about IPV4, you have enough RAM, and we take out one for the broadcast address and one for the network address).
+
 |Zone |Range |EgressNode DC1 |EgressNode DC2   |   |   |
 |---|---|---|---|---|---|
 |  VN1 | 10.0.1.0/23  | {"egressCIDRs": ["10.0.1.0/23"]}  |  {"egressCIDRs": ["10.0.1.0/23"]} | failover happen when Node goes down  |   |
