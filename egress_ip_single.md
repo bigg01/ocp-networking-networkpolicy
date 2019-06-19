@@ -23,8 +23,8 @@ egress-test3            3064846    []
 egress-v2               9248244    []
 ```
 
-# scenario 1 x node 1x NS :white_check_mark
-## assign IP to 1 NODE
+# scenario 1 x node 1x NS 
+## assign IP to 1 NODE :white_check_mark:
 ```
 oc patch hostsubnet ocprouter01 -p '{"egressIPs": ["10.0.0.11"]}'
 # ---> not assigned to NODE
