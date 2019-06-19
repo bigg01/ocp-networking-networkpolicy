@@ -1,13 +1,11 @@
 
 
 # 1 scenario 1xegressIP Node, 1xegressIP for Namespace :white_check_mark:
-```
+```bash
+# assign IP to Node
 oc patch hostsubnet ocprouter01 -p '{"egressIPs": ["10.0.0.11"]}'
-# ---> not assigned to NODE
+# claim IP for NS
 oc patch netnamespace egress-test -p '{"egressIPs": ["10.0.0.11"]}'
-# ---> ip assigned to node
-ip a show ens18 |grep .11
-    inet 10.0.0.11/24 brd 10.0.0.255 scope global secondary ens18
 ```
 ## IP assinged to  Node 
 ```
