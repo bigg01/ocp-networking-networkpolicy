@@ -10,7 +10,16 @@ Failover will happen if egress node disapear automaticly. Egress IP will be assi
 - :heavy_plus_sign: socks/squid
 - :heavy_plus_sign: ip does failover on egress node if node disapears
 - :heavy_minus_sign: egressPolicy cannot filter on Ports
-- :heavy_minus_sign: egress routing can only by on one DC Egress nodes 
+- :heavy_minus_sign: egress routing can only by on one DC Egress nodes
+- :heavy_minus_sign: need OCP only Subnet per Cluster and future clusters
+- :heavy_minus_sign: network team will create subnets for VM and Metal diffrent
+- :heavy_minus_sign: i don't think we can get so many subnets form network people
+
+1 x NP Cluster1 = V1 = 1 subnet VM + 1 subnet Metal
+1 x NP Cluster2 = V1 = 1 subnet VM + 1 subnet Metal
+
+1 x P Cluster1 = V1 = 1 subnet VM + 1 subnet Metal
+1 x P Cluster2 = V1 = 1 subnet VM + 1 subnet Metal
 
 |Zone |Range |EgressNode DC1 |EgressNode DC2   |   |   |
 |---|---|---|---|---|---|
