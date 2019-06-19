@@ -22,9 +22,10 @@ egress-test2            14640467   []
 egress-test3            3064846    []
 egress-v2               9248244    []
 ```
-```
-# scenario 1 x node 1x NS
+
+# scenario 1 x node 1x NS :white_check_mark
 ## assign IP to 1 NODE
+```
 oc patch hostsubnet ocprouter01 -p '{"egressIPs": ["10.0.0.11"]}'
 # ---> not assigned to NODE
 oc patch netnamespace egress-test -p '{"egressIPs": ["10.0.0.11"]}'
@@ -32,3 +33,6 @@ oc patch netnamespace egress-test -p '{"egressIPs": ["10.0.0.11"]}'
 ip a show ens18 |grep .11
     inet 10.0.0.11/24 brd 10.0.0.255 scope global secondary ens18
 ```
+
+
+:boom:
