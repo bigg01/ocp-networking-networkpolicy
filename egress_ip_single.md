@@ -73,7 +73,7 @@ ip a show ens18 |grep .1
 ```
 
 
-# 4 scenario assign egressIP on 1 Nodes, assign IP to placeholder ns and join egress-test to the samenetnamespace
+# 4 scenario assign egressIP on 1 Nodes, assign IP to placeholder ns and join egress-test to the samenetnamespace :boom:
 ```
 oc patch hostsubnet ocprouter01 -p '{"egressIPs": ["10.0.0.11"]}'
 ```
