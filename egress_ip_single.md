@@ -1,6 +1,6 @@
 
 
-# scenario 1 x egress node 1x NS one IP :white_check_mark:
+# 1 scenario 1xegressIP Node, 1xegressIP for Namespace :white_check_mark:
 ```
 oc patch hostsubnet ocprouter01 -p '{"egressIPs": ["10.0.0.11"]}'
 # ---> not assigned to NODE
@@ -22,7 +22,7 @@ ip a show ens18 |grep .11
 >
 < HTTP/1.1 200 OK
 ```
-# scenario 1 x egress node 2x NS one IP:boom:
+# 2 scenario 1xegressIP Node, same egressIP for 2 Namespaces :boom:
 ```
 oc patch netnamespace egress-test2 -p '{"egressIPs": ["10.0.0.11"]}'
 --> LOG egressip.go:356] Multiple namespaces (7305526, 14640467) claiming EgressIP 10.0.0.11
@@ -38,7 +38,7 @@ ip a show ens18 |grep .1 :heavy_exclamation_mark:
 *   Trying 10.0.0.4...
 ```
 
-# scenario 2 x egress node same IP  1x NS one IP :boom:
+# 3 scenario same egressIP on 2 Nodes, 1xegressIP for 1 Namespace :boom:
 ```
 oc patch hostsubnet ocprouter01 -p '{"egressIPs": ["10.0.0.11"]}'
 oc patch hostsubnet ocprouter02 -p '{"egressIPs": ["10.0.0.11"]}'
