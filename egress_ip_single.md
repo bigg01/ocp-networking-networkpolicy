@@ -27,7 +27,7 @@ ip a show ens18 |grep .11
 oc patch netnamespace egress-test2 -p '{"egressIPs": ["10.0.0.11"]}'
 --> LOG egressip.go:356] Multiple namespaces (7305526, 14640467) claiming EgressIP 10.0.0.11
 ```
-# IP remove from the Node 
+## IP remove from the Node 
 ```
 ip a show ens18 |grep .1 :heavy_exclamation_mark:
 ```
@@ -56,7 +56,7 @@ egress-v2               9248244    []
 ocprouter01   ocprouter01   10.0.0.2   10.130.0.0/23   []             [10.0.0.11]
 ocprouter02   ocprouter02   10.0.0.7   10.129.0.0/23   []             [10.0.0.11]
 ```
-# IP remove from the Node 
+## IP remove from the Node 
 ```
 ip a show ens18 |grep .1 :heavy_exclamation_mark:
 ```
