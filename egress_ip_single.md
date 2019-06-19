@@ -93,6 +93,12 @@ placeholder-egress      5349411    [10.0.0.11]
 
 
 ```
+## IP remove from the Node :heavy_exclamation_mark:
+```
+ip a show ens18 |grep .1
+```
+
+
 
 ### clean 
 ```
