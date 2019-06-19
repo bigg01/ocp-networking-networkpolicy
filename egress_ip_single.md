@@ -9,6 +9,11 @@ oc patch netnamespace egress-test -p '{"egressIPs": ["10.0.0.11"]}'
 ip a show ens18 |grep .11
     inet 10.0.0.11/24 brd 10.0.0.255 scope global secondary ens18
 ```
+## IP assinged to  Node 
+```
+ip a show ens18 |grep .11
+    inet 10.0.0.11/24 brd 10.0.0.255 scope global secondary ens18
+ ```
 ### test 
 ```
  curl -v 10.0.0.4:8080
