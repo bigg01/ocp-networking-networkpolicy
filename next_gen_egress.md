@@ -1,7 +1,7 @@
 # Next Gen Egress
 
 We must order a Mobiltiy Range Subnet for each Netzone. We will assign on a DC1 and DC2 Egress nodes the mobility Range.
-Failover will happen if egress node disapear automaticly. Egress IP will be assigned randomly. Egress NetworkPolicy will fillter egress Traffic. 
+Failover will happen if egress node disapear automaticly. Egress IP will be assigned randomly. Egress NetworkPolicy will fillter egress Traffic.  Looks pritty cool! probelm Egress Policy can only be filtered with IPs and not with Pors.
 
 |Zone |Range |EgressNode DC1 |EgressNode DC2   |   |   |
 |---|---|---|---|---|---|
