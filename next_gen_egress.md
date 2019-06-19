@@ -1,12 +1,12 @@
 # Next Gen Egress
 
 We must order a Mobiltiy Range Subnet for each Netzone. We will assign on a DC1 and DC2 Egress nodes the mobility Range.
-Failover will happen if egress node disapear automaticly.
+Failover will happen if egress node disapear automaticly. Egress IP will be assigned randomly. Egress NetworkPolicy will fillter egress Traffic. 
 
-|  Zone | Range | EgressNode DC1 | EgressNode DC2   |   |   |
+|Zone |Range |EgressNode DC1 |EgressNode DC2   |   |   |
 |---|---|---|---|---|---|
 |  VN1 | 10.0.1.0/23  | {"egressCIDRs": ["10.0.1.0/23"]}  |  {"egressCIDRs": ["10.0.1.0/23"]} | failover happen when Node goes down  |   |
-|  VN2 | 10.0.2.0/23  |   |   |   |   |
+|  VN2 | 10.0.2.0/23  | {"egressCIDRs": ["10.0.2.0/23"]}  |  {"egressCIDRs": ["10.0.2.0/23"]} | failover happen when Node goes down  |   |
 |---|---|---|---|---|
 |   |   |   |   |   |
 |   |   |   |   |   |
