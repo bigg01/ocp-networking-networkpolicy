@@ -34,8 +34,9 @@ ip a show ens18 |grep .11
     inet 10.0.0.11/24 brd 10.0.0.255 scope global secondary ens18
 ```
 ### test 
+```
 $ curl -v 10.0.0.4:8080
-
+```
 # scenario 1 x node 2x NS same IP
 ```
 oc patch netnamespace egress-test2 -p '{"egressIPs": ["10.0.0.11"]}'
@@ -44,4 +45,10 @@ oc patch netnamespace egress-test2 -p '{"egressIPs": ["10.0.0.11"]}'
 # :boom: IP remove from the Node
 ```
 ip a show ens18 |grep .1
+```
+### test
+```
+ curl -v 10.0.0.4:8080
+* About to connect() to 10.0.0.4 port 8080 (#0)
+*   Trying 10.0.0.4...
 ```
