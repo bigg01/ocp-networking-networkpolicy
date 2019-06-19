@@ -98,7 +98,26 @@ placeholder-egress      5349411    [10.0.0.11]
 ip a show ens18 |grep .1
 ```
 
+oc patch hostsubnet ocprouter01 --type=merge -p '{"egressCIDRs": ["10.0.0.0/24"]}'
+oc patch hostsubnet ocprouter01 -p '{"egressIPs": []}'
+oc patch netnamespace placeholder-egress -p '{"egressIPs": ["10.0.0.11"]}'
 
+# like this it works
+```
+oc get netnamespace|grep 10.
+egress-test             12824096   [10.0.0.12]
+kube-public             10858048   []
+management-infra        5610426    []
+placeholder-egress      12824095   [10.0.0.11]
+[root@ocpmaster01 guo]# oc get hostnamespace|grep 10.
+error: the server doesn't have a resource type "hostnamespace"
+[root@ocpmaster01 guo]# oc get hostnamesp^Ce|grep 10.
+[root@ocpmaster01 guo]# oc get hostsubnet
+NAME          HOST          HOST IP    SUBNET          EGRESS CIDRS    EGRESS IPS
+ocpmaster01   ocpmaster01   10.0.0.3   10.128.0.0/23   []              []
+ocprouter01   ocprouter01   10.0.0.2   10.130.0.0/23   [10.0.0.0/24]   [10.0.0.11]
+ocprouter02   ocprouter02   10.0.0.7   10.129.0.0/23   [10.0.0.0/24]   [10.0.0.12]
+```
 
 ### clean 
 ```
