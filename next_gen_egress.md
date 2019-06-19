@@ -15,11 +15,12 @@ Failover will happen if egress node disapear automaticly. Egress IP will be assi
 - :heavy_minus_sign: network team will create subnets for VM and Metal diffrent
 - :heavy_minus_sign: i don't think we can get so many subnets form network people
 
-1 x NP Cluster1 = V1 = 1 subnet VM + 1 subnet Metal
-1 x NP Cluster2 = V1 = 1 subnet VM + 1 subnet Metal
+How big? /23 510
+* 1 x NP Cluster1 = V1 = 1 subnet VM + 1 subnet Metal = 2
+* 1 x NP Cluster2 = V1 = 1 subnet VM + 1 subnet Metal = 2
 
-1 x P Cluster1 = V1 = 1 subnet VM + 1 subnet Metal
-1 x P Cluster2 = V1 = 1 subnet VM + 1 subnet Metal
+* 1 x P Cluster1 = V1 = 1 subnet VM + 1 subnet Metal = 2
+* 1 x P Cluster2 = V1 = 1 subnet VM + 1 subnet Metal = 2
 
 |Zone |Range |EgressNode DC1 |EgressNode DC2   |   |   |
 |---|---|---|---|---|---|
