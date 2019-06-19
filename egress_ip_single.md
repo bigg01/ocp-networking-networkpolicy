@@ -29,6 +29,29 @@ ip a show ens18 |grep .1 :heavy_exclamation_mark:
 *   Trying 10.0.0.4...
 ```
 
+# scenario 2 x egress node same IP  1x NS one IP :boom:
+```
+oc patch hostsubnet ocprouter01 -p '{"egressIPs": ["10.0.0.11"]}'
+oc patch hostsubnet ocprouter02 -p '{"egressIPs": ["10.0.0.11"]}'
+oc patch netnamespace egress-test -p '{"egressIPs": ["10.0.0.11"]}'
+```
+```
+oc get netnamespace |grep egress
+egress-test             7305526    [10.0.0.11]
+egress-test2            14640467   []
+egress-test3            3064846    []
+egress-v2               9248244    []
+```
+```
+[root@ocpmaster01 guo]# oc get hostsubnet |grep .11
+ocprouter01   ocprouter01   10.0.0.2   10.130.0.0/23   []             [10.0.0.11]
+ocprouter02   ocprouter02   10.0.0.7   10.129.0.0/23   []             [10.0.0.11]
+```
+# IP remove from the Node 
+```
+ip a show ens18 |grep .1 :heavy_exclamation_mark:
+```
+
 
 
 ### clean 
