@@ -97,6 +97,24 @@ OFPST_FLOW reply (OF1.3) (xid=0x2):
  cookie=0x0, duration=12139.703s, table=100, n_packets=0, n_bytes=0, priority=0 actions=goto_table:101
 ```
 
+# add mesquerade
+```
+# tunnel subnet of the cluster 10.128.0.0/14 
 
-iptables -t nat  -D OPENSHIFT-MASQUERADE  1
+iptables -t nat -I OPENSHIFT-MASQUERADE -s 10.128.0.0/14 -m mark --mark 0xc3ae20 -j SNAT --to-source 10.0.1.12
+```
+
+sh-4.2# ip a show tun0
+10: tun0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1450 qdisc noqueue state UNKNOWN group default qlen 1000
+    link/ether a2:c6:83:99:c2:f9 brd ff:ff:ff:ff:ff:ff
+    inet 10.129.0.1/23 brd 10.129.1.255 scope global tun0
+       valid_lft forever preferred_lft forever
+    inet6 fe80::a0c6:83ff:fe99:c2f9/64 scope link
+       valid_lft forever preferred_lft forever
+sh-4.2#
+ iptables -t nat -D OPENSHIFT-MASQUERADE 2
 [root@ocprouter02 network-scripts]# watch -d "iptables -t nat  --list OPENSHIFT-MASQUERADE -n --line-numbers -v"
+
+
+
+watch -d " ovs-ofctl dump-flows -O OpenFlow13 br0 table=100;ovs-ofctl dump-flows -O OpenFlow13 br0  table=101"
