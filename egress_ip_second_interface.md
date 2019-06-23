@@ -104,6 +104,7 @@ OFPST_FLOW reply (OF1.3) (xid=0x2):
 iptables -t nat -I OPENSHIFT-MASQUERADE -s 10.128.0.0/14 -m mark --mark 0xc3ae20 -j SNAT --to-source 10.0.1.12
 ```
 
+```
 sh-4.2# ip a show tun0
 10: tun0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1450 qdisc noqueue state UNKNOWN group default qlen 1000
     link/ether a2:c6:83:99:c2:f9 brd ff:ff:ff:ff:ff:ff
@@ -112,9 +113,12 @@ sh-4.2# ip a show tun0
     inet6 fe80::a0c6:83ff:fe99:c2f9/64 scope link
        valid_lft forever preferred_lft forever
 sh-4.2#
+```
+# delete iptables
+```
  iptables -t nat -D OPENSHIFT-MASQUERADE 2
-[root@ocprouter02 network-scripts]# watch -d "iptables -t nat  --list OPENSHIFT-MASQUERADE -n --line-numbers -v"
-
-
-
+ ```
+```
+watch -d "iptables -t nat  --list OPENSHIFT-MASQUERADE -n --line-numbers -v"
 watch -d " ovs-ofctl dump-flows -O OpenFlow13 br0 table=100;ovs-ofctl dump-flows -O OpenFlow13 br0  table=101"
+```
