@@ -119,6 +119,8 @@ sh-4.2#
 ```
  iptables -t nat -D OPENSHIFT-MASQUERADE 2
  ```
+ 
+ #### interesting IPtable is not neede :-) if we need ports maybe we add here
 ```
 watch -d "iptables -t nat  --list OPENSHIFT-MASQUERADE -n --line-numbers -v"
 watch -d " ovs-ofctl dump-flows -O OpenFlow13 br0 table=100;ovs-ofctl dump-flows -O OpenFlow13 br0  table=101"
