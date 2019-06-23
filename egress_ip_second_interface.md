@@ -1,3 +1,5 @@
+### only works with 3.11
+
 ## take private range not existing in network
 ```
 oc get netnamespace
