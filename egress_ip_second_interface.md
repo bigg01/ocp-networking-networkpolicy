@@ -1,0 +1,102 @@
+
+```
+oc get netnamespace
+NAME                    NETID      EGRESS IPS
+dbtest                  8935821    []
+default                 0          []
+egress-test             12824096   []
+egress-test2            14640467   []
+egress-test3            3064846    []
+egress-v2               9248244    []
+gitea                   12235633   []
+kube-public             10858048   []
+kube-system             9880231    []
+management-infra        5610426    []
+minio                   6037138    []
+mygotty                 8566492    []
+openshift               14211522   []
+openshift-console       16341554   []
+openshift-infra         13958715   []
+openshift-logging       1898091    []
+openshift-node          5992634    []
+openshift-sdn           6592413    []
+openshift-web-console   8056251    []
+openssl                 9681253    []
+placeholder-egress      12824095   []
+```
+```
+[root@ocpmaster01 guo]# oc get hostsubnet
+NAME          HOST          HOST IP    SUBNET          EGRESS CIDRS   EGRESS IPS
+ocpmaster01   ocpmaster01   10.0.0.3   10.128.0.0/23   []             []
+ocprouter01   ocprouter01   10.0.0.2   10.130.0.0/23   []             []
+ocprouter02   ocprouter02   10.0.0.7   10.129.0.0/23   []             []
+```
+```
+oc patch hostsubnet ocprouter02 --type=merge -p '{"egressCIDRs": ["10.0.1.0/24"]}'
+# oc patch hostsubnet ocprouter01 --type=merge -p '{"egressCIDRs": ["10.0.2.0/24"]}'
+oc patch netnamespace egress-test -p '{"egressIPs": ["10.0.1.12"]}'
+# oc patch netnamespace egress-test -p '{"egressIPs": ["10.0.0.12"]}'
+```
+
+```
+oc get hostsubnet
+NAME          HOST          HOST IP    SUBNET          EGRESS CIDRS    EGRESS IPS
+ocpmaster01   ocpmaster01   10.0.0.3   10.128.0.0/23   []              []
+ocprouter01   ocprouter01   10.0.0.2   10.130.0.0/23   []              []
+ocprouter02   ocprouter02   10.0.0.7   10.129.0.0/23   [10.0.1.0/24]   [10.0.1.12]
+[root@ocpmaster01 guo]# oc get netnamespace
+NAME                    NETID      EGRESS IPS
+dbtest                  8935821    []
+default                 0          []
+egress-test             12824096   [10.0.1.12]
+egress-test2            14640467   []
+egress-test3            3064846    []
+egress-v2               9248244    []
+gitea                   12235633   []
+kube-public             10858048   []
+kube-system             9880231    []
+management-infra        5610426    []
+minio                   6037138    []
+mygotty                 8566492    []
+openshift               14211522   []
+openshift-console       16341554   []
+openshift-infra         13958715   []
+openshift-logging       1898091    []
+openshift-node          5992634    []
+openshift-sdn           6592413    []
+openshift-web-console   8056251    []
+openssl                 9681253    []
+placeholder-egress      12824095   []
+```
+
+#get vid hex
+```
+printf '%02X'  12824096
+C3AE20
+```
+
+# APPD node (this time master)
+# 0xc3ae20
+```
+ ovs-ofctl -O OpenFlow13 dump-flows br0 table=100
+OFPST_FLOW reply (OF1.3) (xid=0x2):
+ cookie=0x0, duration=11999.551s, table=100, n_packets=0, n_bytes=0, priority=300,udp,tp_dst=4789 actions=drop
+ cookie=0x0, duration=11999.551s, table=100, n_packets=0, n_bytes=0, priority=200,tcp,nw_dst=10.0.0.7,tp_dst=53 actions=output:2
+ cookie=0x0, duration=11999.551s, table=100, n_packets=0, n_bytes=0, priority=200,udp,nw_dst=10.0.0.7,tp_dst=53 actions=output:2
+ cookie=0x0, duration=45.599s, table=100, n_packets=0, n_bytes=0, priority=100,ip,reg0=0xc3ae20 actions=set_field:a2:c6:83:99:c2:f9->eth_dst,set_field:0xc3ae20->pkt_mark,goto_table:101
+ cookie=0x0, duration=11999.551s, table=100, n_packets=0, n_bytes=0, priority=0 actions=goto_table:101
+```
+# egress node
+-->  reg0=0xc3ae20 actions=set_field:a2:c6:83:99:c2:f9->eth_dst,set_field:0xc3ae20->pkt_mark,goto_table:101
+```
+OFPST_FLOW reply (OF1.3) (xid=0x2):
+ cookie=0x0, duration=12139.703s, table=100, n_packets=0, n_bytes=0, priority=300,udp,tp_dst=4789 actions=drop
+ cookie=0x0, duration=12139.703s, table=100, n_packets=0, n_bytes=0, priority=200,tcp,nw_dst=10.0.0.7,tp_dst=53 actions=output:2
+ cookie=0x0, duration=12139.703s, table=100, n_packets=0, n_bytes=0, priority=200,udp,nw_dst=10.0.0.7,tp_dst=53 actions=output:2
+ cookie=0x0, duration=185.751s, table=100, n_packets=0, n_bytes=0, priority=100,ip,reg0=0xc3ae20 actions=set_field:a2:c6:83:99:c2:f9->eth_dst,set_field:0xc3ae20->pkt_mark,goto_table:101
+ cookie=0x0, duration=12139.703s, table=100, n_packets=0, n_bytes=0, priority=0 actions=goto_table:101
+```
+
+
+iptables -t nat  -D OPENSHIFT-MASQUERADE  1
+[root@ocprouter02 network-scripts]# watch -d "iptables -t nat  --list OPENSHIFT-MASQUERADE -n --line-numbers -v"
