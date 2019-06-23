@@ -115,6 +115,7 @@ sh-4.2# ip a show tun0
 sh-4.2#
 ```
 # delete iptables
+
 ```
  iptables -t nat -D OPENSHIFT-MASQUERADE 2
  ```
@@ -122,3 +123,17 @@ sh-4.2#
 watch -d "iptables -t nat  --list OPENSHIFT-MASQUERADE -n --line-numbers -v"
 watch -d " ovs-ofctl dump-flows -O OpenFlow13 br0 table=100;ovs-ofctl dump-flows -O OpenFlow13 br0  table=101"
 ```
+
+
+# helper
+IPTABLES: https://github.com/bigg01/go-iptables
+OVS: https://github.com/bigg01/ovs-exporter
+
+Kubernetes watches IPS: 
+```
+oc get clusternetworks
+NAME      CLUSTER NETWORKS   SERVICE NETWORK   PLUGIN NAME
+default   10.128.0.0/14:9    172.30.0.0/16     redhat/openshift-ovs-networkpolicy
+```
+https://docs.openshift.com/container-platform/3.11/rest_api/apis-network.openshift.io/v1.EgressNetworkPolicy.html
+https://docs.openshift.com/container-platform/3.11/rest_api/apis-network.openshift.io/v1.NetNamespace.html
