@@ -1,4 +1,4 @@
-
+## take private range not existing in network
 ```
 oc get netnamespace
 NAME                    NETID      EGRESS IPS
@@ -31,20 +31,35 @@ ocpmaster01   ocpmaster01   10.0.0.3   10.128.0.0/23   []             []
 ocprouter01   ocprouter01   10.0.0.2   10.130.0.0/23   []             []
 ocprouter02   ocprouter02   10.0.0.7   10.129.0.0/23   []             []
 ```
+# setup nodes DC1 and DC2 with the same range per VZone
 ```
-oc patch hostsubnet ocprouter02 --type=merge -p '{"egressCIDRs": ["10.0.1.0/24"]}'
-# oc patch hostsubnet ocprouter01 --type=merge -p '{"egressCIDRs": ["10.0.2.0/24"]}'
-oc patch netnamespace egress-test -p '{"egressIPs": ["10.0.1.12"]}'
-# oc patch netnamespace egress-test -p '{"egressIPs": ["10.0.0.12"]}'
+```
+# DC1
+oc patch hostsubnet ocprouter02 --type=merge -p '{"egressCIDRs": ["172.0.2.0/24"]}'
+# DC2
+oc patch hostsubnet ocprouter01 --type=merge -p '{"egressCIDRs": ["172.0.2.0/24"]}'
+# patch projects
+## when node dies it will atomaticly failover to the DC2 node
+oc patch netnamespace egress-test -p '{"egressIPs": ["172.0.2.12"]}'
+oc patch netnamespace egress-test2 -p '{"egressIPs": ["172.0.2.13"]}'
+```
 ```
 
-```
+```terminal
+# when all Servers are up
 oc get hostsubnet
-NAME          HOST          HOST IP    SUBNET          EGRESS CIDRS    EGRESS IPS
-ocpmaster01   ocpmaster01   10.0.0.3   10.128.0.0/23   []              []
-ocprouter01   ocprouter01   10.0.0.2   10.130.0.0/23   []              []
-ocprouter02   ocprouter02   10.0.0.7   10.129.0.0/23   [10.0.1.0/24]   [10.0.1.12]
-[root@ocpmaster01 guo]# oc get netnamespace
+NAME          HOST          HOST IP    SUBNET          EGRESS CIDRS     EGRESS IPS
+ocpmaster01   ocpmaster01   10.0.0.3   10.128.0.0/23   []               []
+ocprouter01   ocprouter01   10.0.0.2   10.130.0.0/23   [172.0.2.0/24]   [172.0.2.13]
+ocprouter02   ocprouter02   10.0.0.7   10.129.0.0/23   [172.0.2.0/24]   [172.0.2.12]
+# shutdown  ocprouter02
+$  oc get hostsubnet
+NAME          HOST          HOST IP    SUBNET          EGRESS CIDRS     EGRESS IPS
+ocpmaster01   ocpmaster01   10.0.0.3   10.128.0.0/23   []               []
+ocprouter01   ocprouter01   10.0.0.2   10.130.0.0/23   [172.0.2.0/24]   [172.0.2.13, 172.0.2.12]
+ocprouter02   ocprouter02   10.0.0.7   10.129.0.0/23   [172.0.2.0/24]   []
+
+$  oc get netnamespace
 NAME                    NETID      EGRESS IPS
 dbtest                  8935821    []
 default                 0          []
@@ -100,8 +115,8 @@ OFPST_FLOW reply (OF1.3) (xid=0x2):
 # add mesquerade
 ```
 # tunnel subnet of the cluster 10.128.0.0/14 
-
-iptables -t nat -I OPENSHIFT-MASQUERADE -s 10.128.0.0/14 -m mark --mark 0xc3ae20 -j SNAT --to-source 10.0.1.12
+# it looks like its not needed
+#iptables -t nat -I OPENSHIFT-MASQUERADE -s 10.128.0.0/14 -m mark --mark 0xc3ae20 -j SNAT --to-source 10.0.1.12
 ```
 
 ```
@@ -125,6 +140,25 @@ sh-4.2#
 watch -d "iptables -t nat  --list OPENSHIFT-MASQUERADE -n --line-numbers -v"
 watch -d " ovs-ofctl dump-flows -O OpenFlow13 br0 table=100;ovs-ofctl dump-flows -O OpenFlow13 br0  table=101"
 ```
+
+
+# apiVersion: network.openshift.io/v1
+```yaml
+kind: EgressNetworkPolicy
+metadata:
+  name: default
+spec:
+  egress:
+    - to:
+        cidrSelector: 10.0.1.0/24
+      type: Allow
+    - to:
+        cidrSelector: 10.0.0.0/24
+      type: Allow
+    - to:
+        cidrSelector: 0.0.0.0/0
+      type: Deny
+      ```
 
 
 # helper
