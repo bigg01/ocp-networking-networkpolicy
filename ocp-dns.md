@@ -35,3 +35,28 @@ options ndots:5
 $
 
 ##  /etc/resolv.conf comes from dnsmaqsk
+
+## start singel coredns server
+$ sudo ./coredns -conf corefile -dns.port 53
+
+corefile
+```
+
+.:53 {
+    reload 3s
+    erratic
+    debug
+    #log stdout
+    log . stdout "{remote} {proto} Request: {name} {type} {when}" {
+        class all
+    }
+    hosts example.hosts oliverg.net oliverg.ch six-group.net {
+        10.0.0.1 example.org hugo.oliverg.net hugo.six-group.net
+        10.0.0.4 oli.six-group.net
+        fallthrough
+        
+    }
+
+    forward . 10.0.0.138
+}
+```
