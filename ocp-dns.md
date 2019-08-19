@@ -16,4 +16,10 @@ https://github.com/helm/charts/tree/master/stable/coredns
  helm install --name coredns --namespace=six-coredns stable/coredns
 ```
 
+```sh
+oc  run -it --rm --restart=Never --image=infoblox/dnstools:latest dnstools
+
+dnstools# dig www.example.org  @172.17.0.16 -p 9053
+```
+
 ## golang client for coredns
