@@ -20,6 +20,8 @@ https://github.com/helm/charts/tree/master/stable/coredns
 oc  run -it --rm --restart=Never --image=infoblox/dnstools:latest dnstools
 
 dnstools# dig www.example.org  @172.17.0.16 -p 9053
+
+dig   @coredns-coredns.six-coredns.svc -p 1053 lampl.hugo
 ```
 
 ## golang client for coredns
