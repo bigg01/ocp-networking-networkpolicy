@@ -25,3 +25,13 @@ dig   @coredns-coredns.six-coredns.svc -p 1053 lampl.hugo
 ```
 
 ## golang client for coredns
+
+
+##POD dns comes from host resolv
+$ cat /etc/resolv.conf
+nameserver 172.17.84.9
+search splunktest.svc.cluster.local svc.cluster.local cluster.local reddog.microsoft.com
+options ndots:5
+$
+
+##  /etc/resolv.conf comes from dnsmaqsk
