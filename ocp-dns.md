@@ -36,7 +36,74 @@ $
 
 ##  /etc/resolv.conf comes from dnsmaqsk
 
-## start singel coredns server
+
+
+
+### rewrite setup
+sudo ./coredns -conf corefile -dns.port 53
+
+
+```
+# coredns
+# https://coredns.io/2017/05/08/custom-dns-entries-for-kubernetes/
+#ovhome.local
+.:53 {
+    log
+    reload 3s
+    erratic
+    debug
+    errors
+    health
+    cache 30
+    rewrite name oliverg.svc.cluster.local lamp.ovhome.local
+    rewrite name hugo.svc.cluster.local oliverg.ch
+    forward . 10.0.0.138
+    file example.db ovhome.local
+}
+
+
+#file example.db ovhome.local
+```
+
+```
+# example.db
+$ORIGIN ovhome.local.
+$TTL 86400
+ovhome.local. IN SOA ns.ovhome.local. mail.ovhome.local. (
+	33
+	43200
+	180
+	1209600
+	10800
+)
+ocprouter02.ovhome.local.	30	A	10.0.0.7
+ocprouter01.ovhome.local.	3600	A	10.0.0.2
+console.ocp.ovhome.local.	3600	A	10.0.0.2
+ocpmaster01.ovhome.local.	3600	A	10.0.0.3
+*.app.ocp.ovhome.local.	3600	A	10.0.0.2
+modem.ovhome.local.	86400	A	10.0.0.138
+lamp.ovhome.local.	86400	A	10.0.0.4
+nas.ovhome.local.	86400	A	10.0.0.156
+ovhome.local.	NS	ns.ovhome.local.
+ns.ovhome.local.	A	10.0.0.156
+
+```
+### test 
+```bash
+dig @localhost -p 53 oliverg.svc.cluster.local  +noall +answer
+
+; <<>> DiG 9.10.6 <<>> @localhost -p 53 oliverg.svc.cluster.local +noall +answer
+; (2 servers found)
+;; global options: +cmd
+oliverg.svc.cluster.local. 18	IN	A	10.0.0.4
+ guo  ~   (Detached)  $  ssh oliverg.svc.cluster.local
+guo@oliverg.svc.cluster.local's password:
+
+```
+
+
+
+## start single coredns server / hostfile setup
 $ sudo ./coredns -conf corefile -dns.port 53
 
 corefile
