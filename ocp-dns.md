@@ -1,4 +1,4 @@
-# the idea is to run a coredns on openshift and add it to dnsmasq. while we are speaking to internal system we can set CNAMEs on SVC address to provide better NAT solution and Certs are matching.
+he idea is to run a coredns on openshift and add it to dnsmasq. while we are speaking to internal system we can set CNAMEs on SVC address to provide better NAT solution and Certs are matching.
 
 ## install helm on OCP
 ```sh
@@ -30,7 +30,7 @@ dig   @coredns-coredns.six-coredns.svc -p 1053 lampl.hugo
 # setup egress specific dns for PODS.
 
 ## rewrite setup
-sudo ./coredns -conf corefile -dns.port 53
+$ sudo ./coredns -conf corefile -dns.port 53
 ```
 # corefile
 # https://coredns.io/2017/05/08/custom-dns-entries-for-kubernetes/
@@ -48,7 +48,9 @@ sudo ./coredns -conf corefile -dns.port 53
     forward . 10.0.0.3:8053
     #file example.db ovhome.local
 }
+```
 
+```
 #all-redirects
 
 rewrite stop {
@@ -63,7 +65,7 @@ rewrite stop {
 ```
 
 
-######POD specs
+### POD specs
 
 ```yaml
     spec:
@@ -82,7 +84,7 @@ rewrite stop {
           - oliverg.ch
       dnsPolicy: None
 ```
-######POD specs
+### POD specs
 
 
 
