@@ -27,6 +27,8 @@ dig   @coredns-coredns.six-coredns.svc -p 1053 lampl.hugo
 ## golang client for coredns
 
 
+
+
 # setup egress specific dns for PODS.
 
 ## rewrite setup
@@ -64,7 +66,14 @@ rewrite stop {
     }
 ```
 
+## get nodename on pod
+```
+- name: MY_NODE_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: spec.nodeName
 
+```
 ### POD specs
 
 ```yaml
