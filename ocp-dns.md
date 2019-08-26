@@ -126,11 +126,12 @@ httpd-example.oliverg.ch. 30    IN      A       172.30.35.55
 ;; MSG SIZE  rcvd: 105
 ```
 
+# before 3.10/3.11
+<aside class="error">
 
+Reason: Pod "dnstools" is invalid: [spec.dnsConfig: Forbidden: DNSConfig: custom pod DNS is disabled by feature gate, spec: Forbidden: pod updates may not change fields other than `spec.containers[*].image`, `spec.initContainers[*].image`, `spec.activeDeadlineSeconds` or `spec.tolerations` (only additions to existing tolerations)
 
-
-
-
+</aside>
 
 
 
