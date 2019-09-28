@@ -142,7 +142,27 @@ Reason: Pod "dnstools" is invalid: [spec.dnsConfig: Forbidden: DNSConfig: custom
 
 ### rewrite setup
 sudo ./coredns -conf corefile -dns.port 53
+```
+oc adm policy add-cluster-role-to-user cluster-reader system:serviceaccount:endp-test:default --rolebinding-name=cluster-reader -n endp-test
 
+
+#
+.:1053 {
+    log
+    reload 3s
+    erratic
+    debug
+    errors
+    health
+    cache 30
+    rewrite name test.ocp.oliverg.ch tcpproxy.egress-test.svc
+    kubernetes cluster.local 172.0.0.0/16
+    #forward . {$LOCALDNSSERVER}
+    forward . /etc/resolv.conf
+    
+}
+
+```
 
 ```
 # coredns
