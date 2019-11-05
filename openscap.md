@@ -86,3 +86,11 @@ oscap xccdf generate guide --profile rht-ccp \
         
  ## custom stylesheet
 oscap xccdf generate custom --stylesheet /vagrant/vendor/govready/prototypes/openscap/xsl/xccdf-report.xsl --output /var/www/govready-html/gr-xccdf.html /var/www/govready-html/usgcb-rhel6-server.xml
+
+
+## xccdf2csv
+
+https://github.com/opencontrol/xccdf2csv
+
+## csv to prometheus 
+https://github.com/stohrendorf/csv-prometheus-exporter
