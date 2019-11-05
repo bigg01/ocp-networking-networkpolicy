@@ -31,3 +31,46 @@ filesystem scanner - oscap-chroot: Mount a filesystem to the container and run t
 ```sh
 docker run --rm -v /:/mnt/root -v $(pwd):/mnt/results openscap/openscap:f27-1 oscap-chroot /mnt/root xccdf eval --report /mnt/results/results.html --profile common /usr/share/xml/scap/ssg/content/ssg-fedora-ds.xml
 ```
+
+
+# running job in OCP
+
+https://github.com/evgenyz/openscap-ocp
+
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: oscap
+spec:
+  parallelism: 1
+  completions: 1
+  activeDeadlineSeconds: 600
+  backoffLimit: 2
+  template:
+    metadata:
+      name: oscap
+    spec:
+      containers:
+      - name: oscap
+        image: docker.io/ekolesni/openscap-ocp4
+        command: ["oscap-chroot", "/host", "--verbose", "DEVEL", "xccdf", "eval", "--fetch-remote-resources", "--profile", "xccdf_org.ssgproject.content_profile_ospp",  "--report", "/tmp/report.html", "/var/lib/content/ssg-fedora-ds-1.3.xml"]
+        securityContext:
+          privileged: true
+          runAsUser: 0
+        volumeMounts:
+        - mountPath: /host
+          name: host
+      hostNetwork: true
+      hostPID: true
+#      nodeName: ip-10-0-129-101.ec2.internal
+      restartPolicy: Never
+      volumes:
+      - hostPath:
+        path: /
+        type: Directory
+        name: host
+```
+
+tekton example:
+
+https://github.com/kabanero-io/kabanero-security/blob/399064f16265f9a16960602c70c6366bdd98dd8f/pipelines/samples/scan-pipeline.yaml
