@@ -2,8 +2,8 @@
 
 ## summary
 
-as an OCP  Engineer i want to controlle my cluster and check against current Hardening Guide.
-Check should run as JOBS on OCP and reports should be translate int to Prometheus Metris.
+as an OCP  Engineer i want to controle my cluster and check against current Hardening Guides.
+Checks should run as JOBS on OCP and reports should be translate int to Prometheus Metris.
 - create jobs
 - copy result to webserver
 - eval results and make prom metris out of it.
