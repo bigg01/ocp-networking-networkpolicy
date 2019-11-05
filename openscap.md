@@ -36,7 +36,7 @@ docker run --rm -v /:/mnt/root -v $(pwd):/mnt/results openscap/openscap:f27-1 os
 # running job in OCP
 
 https://github.com/evgenyz/openscap-ocp
-
+```yaml
 apiVersion: batch/v1
 kind: Job
 metadata:
