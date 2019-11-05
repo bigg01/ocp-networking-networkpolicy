@@ -76,10 +76,5 @@ tekton example:
 https://github.com/kabanero-io/kabanero-security/blob/399064f16265f9a16960602c70c6366bdd98dd8f/pipelines/samples/scan-pipeline.yaml
 
 
-## generate guide
-oscap xccdf generate guide --profile rht-ccp \
-  --cpe /usr/share/xml/scap/ssg/content/ssg-rhel7-cpe-dictionary.xml \
-        /usr/share/xml/scap/ssg/content/ssg-rhel7-xccdf.xml > /var/www/html/security_guide.html
-
 ## custom stylesheet
 oscap xccdf generate custom --stylesheet /vagrant/vendor/govready/prototypes/openscap/xsl/xccdf-report.xsl --output /var/www/govready-html/gr-xccdf.html /var/www/govready-html/usgcb-rhel6-server.xml
