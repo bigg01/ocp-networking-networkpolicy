@@ -75,6 +75,7 @@ tekton example:
 
 https://github.com/kabanero-io/kabanero-security/blob/399064f16265f9a16960602c70c6366bdd98dd8f/pipelines/samples/scan-pipeline.yaml
 
+https://github.com/kabanero-io/kabanero-security/tree/master/pipelines/samples/images/scanner
 
 
 ## generate guide
