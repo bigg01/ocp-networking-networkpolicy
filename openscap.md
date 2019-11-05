@@ -1,6 +1,14 @@
+## summary
+
+as an OCP  Engineer i want to controlle my cluster and check against current Hardening Guide.
+Check should run as JOBS on OCP and reports should be translate int to Prometheus Metris.
+- create jobs
+- copy result to webserver
+- eval results and make prom metris out of it.
+
 https://github.com/ComplianceAsCode/content/blob/master/docs/manual/user_guide.adoc
 
-# get nightly build
+## get nightly build
 ```
 wget https://jenkins.complianceascode.io/view/SCAP%20Security%20Guide/job/scap-security-guide-nightly-zip/lastSuccessfulBuild/artifact/scap-security-guide-nightly.zip
 
