@@ -38,3 +38,4 @@ spec:
 - Host alis should work.
   - reading svc ip and update hosts file
   - write an operator?
+  - move from http/https egress haproxy mode to plane TCP. supporting ranges
