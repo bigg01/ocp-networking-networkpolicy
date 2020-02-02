@@ -32,3 +32,9 @@ spec:
 
 
 ```
+
+### Options
+- user CoreDNS as split DNS. verry tricky because its must mit splitted per Namespace
+- Host alis should work.
+  - reading svc ip and update hosts file
+  - write an operator?
