@@ -39,3 +39,8 @@ spec:
   - reading svc ip and update hosts file
   - write an operator?
   - move from http/https egress haproxy mode to plane TCP. supporting ranges
+#### we can use Podpresent for inject host file.
+
+https://kubernetes.io/docs/concepts/workloads/pods/podpreset/
+
+https://docs.openshift.com/container-platform/3.10/dev_guide/pod_preset.html
